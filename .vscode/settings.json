@@ -1,0 +1,15 @@
+{
+    "python.autoComplete.extraPaths": [
+        "blender_autocomplete/2.93"
+    ],
+    "python.linting.pylintArgs": [
+        "--init-hook",
+        "import sys; sys.path.append('blender_autocomplete/2.93')"
+    ],
+    "python.analysis.extraPaths": [
+        "blender_autocomplete/2.93"
+    ],
+    "blender.addon.loadDirectory": "src",
+    "blender.addon.reloadOnSave": true,
+    "blender.addon.sourceDirectory": "src"
+}
