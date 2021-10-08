@@ -1,27 +1,44 @@
 import bpy
 from bpy.ops import armature
-from bpy.types import Armature, Bone, EditBone
-from mathutils import Vector, Matrix
-from .utility import dist_threshold, raycast, get_active, vect_to_string
-
-# https://blender.stackexchange.com/questions/28225/armature-not-in-edit-mode
+from bpy.types import Armature, EditBone
+from mathutils import Vector
+from .utility import dist_threshold, invert_matrix_stack, raycast, get_active
 
 class BoneJuice_SurfacePlacer(bpy.types.Operator):
-    bl_idname = "view3d.bone_placer_surf"
+    bl_idname = "armature.bj_bone_placer_surf"
     bl_label = "Surface Bone Placer"
     bl_description = "Places bones on the surface of an object, facing the normal"
-    bl_options = {"REGISTER"}
+    bl_options = {"REGISTER","UNDO"}
 
     armature: Armature = None
     boneLength: float = 0.2
     lastClick: Vector
     clicks: int = 0
 
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_SurfacePlacer.bl_idname,
+            text="Place Surface Bones",
+            icon='BONE_DATA')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            ("bpy.ops.armature.bj_bone_placer_surf", "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
     def modal(self, context, event: bpy.types.Event): # Runs every time the user inputs
+        # If we're not in the proper context (active objecy has changed or not in edit mode), leave before we break stuff
+        if get_active().data != self.armature or bpy.context.mode != 'EDIT_ARMATURE':
+            self.report({'INFO'}, "Exited Surface Bone Placer mode with " + bpy.context.mode)
+            return {'CANCELLED'}
+
+        # Only accept plain left click inputs to allow for navigation
         if event.type == 'LEFTMOUSE' and not event.shift and not event.alt and not event.ctrl:
             self.place_bone(context, event)
             return {'RUNNING_MODAL'}
-        elif event.type in {'ESC', 'TAB', '4'}: # User is attempting to exit context
+        elif event.type in {'ESC', 'TAB'}: # User is attempting to exit context
             #bpy.ops.object.mode_set('OBJECT')
             self.report({'INFO'}, "Exited Surface Bone Placer mode")
             return {'CANCELLED'}
@@ -53,11 +70,10 @@ class BoneJuice_SurfacePlacer(bpy.types.Operator):
         self.clicks = self.clicks + 1
         self.lastClick = pos
         
-        #bpy.ops.armature.bone_primitive_add(name = "SurfaceBone")
-        #bone: EditBone = bpy.context.active_bone
+        # Create new bone
         bone: EditBone = self.armature.edit_bones.new("SurfaceBone")
-        bone.head = pos - (norm * (self.boneLength / 2))
-        bone.tail = pos + norm * self.boneLength
+        bone.head = pos - (norm * (self.boneLength / 2)) # Position head below surface normal
+        bone.tail = pos + norm * self.boneLength # And make tail of it point out
         bone.align_roll(norm) # Align roll of bone to point toward Z Axis
         
         if bpy.context.active_bone: # If we have an active parent bone
@@ -69,12 +85,15 @@ class BoneJuice_SurfacePlacer(bpy.types.Operator):
             bone.select = True # Select this bone
 
             bpy.ops.armature.parent_set(type='OFFSET') # Set bone parent to other bone with a relative offset
-            #bone.transform(Matrix.inverted(parent.matrix), True, True) # Invert the transformation matrix of it
             bone.parent = bpy.context.active_bone # Then apply the new parent
             
+            # Deselect all bones again
             for b in bpy.context.selected_editable_bones:
                 b.select = False
             
             self.report({'INFO'}, "Placed bone " + bone.name + " as child of " + parent.name)
         else:
             self.report({'INFO'}, "Placed bone " + bone.name)
+        
+        # Apply inverse of global transform matrix so bone is placed at global coordinates, not local
+        bone.transform(bpy.context.object.matrix_world.inverted())

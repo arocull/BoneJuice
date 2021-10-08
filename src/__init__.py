@@ -11,14 +11,13 @@ bl_info = {
 
 import bpy
 from .bones import BoneJuice_SurfacePlacer
+from .registrator import registerClass, unregisterClass
 
 def register():
-    bpy.utils.register_class(BoneJuice_SurfacePlacer)
-    pass
+    registerClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
 
 def unregister():
-    bpy.utils.unregister_class(BoneJuice_SurfacePlacer)
-    pass
+    unregisterClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
 
 if __name__ == "__main__":
     register()

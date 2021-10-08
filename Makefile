@@ -2,7 +2,9 @@ all: build
 
 build: clean
 	mkdir build/
-	zip -r build/BoneJuice.zip src/
+	cp -rf src BoneJuice
+	zip -r build/BoneJuice.zip BoneJuice/
+	rm -rf BoneJuice
 
 clean:
 	rm -rf build/

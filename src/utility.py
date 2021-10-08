@@ -1,6 +1,7 @@
 import bpy
 from bpy_extras import view3d_utils
-from mathutils import Vector
+from mathutils import Vector, Matrix
+from typing import List
 
 # Raycast - Taken and modified from Blender's view3d_raycast modal template 
 def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
@@ -72,7 +73,7 @@ def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
     
     # If we hit an object, use that
     if best_obj is not None:
-        scene.cursor.location = hitPosition
+        #scene.cursor.location = hitPosition
         return best_obj.original, hitPosition, hitNormal, hitFaceIndex
     
     # If view vector is orthographic and horizontal, just take ray origin
@@ -82,7 +83,7 @@ def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
 
     # If not, snap to origin
     hitPosition = ray_origin - view_vector * (ray_origin.z / view_vector.z)
-    scene.cursor.location = hitPosition
+    #scene.cursor.location = hitPosition
     return None, hitPosition, Vector((0.0, 0.0, 1.0)), 0 # Normal vector should always point up
 
 def dist(posA: Vector, posB: Vector) -> float:
@@ -92,10 +93,22 @@ def dist_threshold(posA: Vector, posB: Vector, threshold: float = 1.0) -> bool:
     return dist(posA, posB) < threshold
 
 def get_active() -> bpy.types.Object:
+    """Gets the active Object"""
     return bpy.context.object
 
 def get_active_bone() -> bpy.types.EditBone:
+    """Gets the active Edit Bone"""
     return bpy.context.active_bone
 
 def vect_to_string(v: Vector) -> str:
+    """Converts a 3D vector to a string separated by commas"""
     return str(v.x) + ", " + str(v.y) + ", " + str(v.z)
+
+def invert_matrix_stack(mats: List[Matrix]) -> List[Matrix]:
+    newMatArray: List[Matrix] = []
+    
+    for mat in mats:
+        newMatArray.append(mat.inverted())
+    
+    newMatArray.reverse()
+    return newMatArray
