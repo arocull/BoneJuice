@@ -2,7 +2,7 @@ import bpy
 from bpy.ops import armature
 from bpy.types import Armature, EditBone
 from mathutils import Vector
-from .utility import dist_threshold, invert_matrix_stack, raycast, get_active
+from .utility import dist_threshold, raycast, get_active
 
 class BoneJuice_SurfacePlacer(bpy.types.Operator):
     bl_idname = "armature.bj_bone_placer_surf"
@@ -29,19 +29,22 @@ class BoneJuice_SurfacePlacer(bpy.types.Operator):
         return url_manual_prefix, url_manual_mapping
 
     def modal(self, context, event: bpy.types.Event): # Runs every time the user inputs
-        # If we're not in the proper context (active objecy has changed or not in edit mode), leave before we break stuff
-        if get_active().data != self.armature or bpy.context.mode != 'EDIT_ARMATURE':
-            self.report({'INFO'}, "Exited Surface Bone Placer mode with " + bpy.context.mode)
+        # If we're not in the proper context (active object has changed or not in edit mode), leave before we break stuff
+        # OR if user escapes or tabs out
+        if get_active().data != self.armature or bpy.context.mode != 'EDIT_ARMATURE' or event.type in {'ESC', 'TAB'}:
+            self.report({'INFO'}, "Exited Surface Bone Placer mode")
             return {'CANCELLED'}
 
         # Only accept plain left click inputs to allow for navigation
         if event.type == 'LEFTMOUSE' and not event.shift and not event.alt and not event.ctrl:
             self.place_bone(context, event)
             return {'RUNNING_MODAL'}
-        elif event.type in {'ESC', 'TAB'}: # User is attempting to exit context
-            #bpy.ops.object.mode_set('OBJECT')
+        
+        # User is attempting to undo a mistake. Close modal to push these changes to the stack,
+        # then allow pass-through so we can undo what we did
+        if event.type == 'Z' and event.ctrl:
             self.report({'INFO'}, "Exited Surface Bone Placer mode")
-            return {'CANCELLED'}
+            return {'CANCELLED', 'PASS_THROUGH'}
 
         return {'PASS_THROUGH'} # Allow user inputs to move through
 

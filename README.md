@@ -3,6 +3,7 @@ Armature utility plugin for Blender, for niche cases I encounter where it would 
 
 Current features include:
 - Surface Bone Placer - Quickly place bones on geometric surfaces
+- Mark Bone Side - Quickly mark bones as left or right in an armature
 
 # Installation
 Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install` in the top right, and select the zip file. Make sure the plugin it points to is enabled.
@@ -32,3 +33,6 @@ When you are finished placing bones, hit `Escape` to exit the modal. When using 
 An example of what it does (made center bone active, then used tool to place bones on surface of mesh):
 
 ![](docs/images/exmp_surface_bones.png)
+
+## Mark Bone Side
+While editing an Armature, go to `Armature > Names > Mark Side`. This works similar to `Auto-Name Left/Right`, but allows you to set bones to one side or another regardless of actual position when not using the "automatic" setting.
