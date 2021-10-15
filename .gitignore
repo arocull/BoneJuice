@@ -1,4 +1,5 @@
 blender_autocomplete/
 **/__pycache__/
 build/
+tests/
 BoneJuice/

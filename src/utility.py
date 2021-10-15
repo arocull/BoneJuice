@@ -96,6 +96,10 @@ def get_active() -> bpy.types.Object:
     """Gets the active Object"""
     return bpy.context.object
 
+def set_active(obj: bpy.types.Object):
+    """Sets the active Object, use None to deselect"""
+    bpy.context.view_layer.objects.active = obj
+
 def get_active_bone() -> bpy.types.EditBone:
     """Gets the active Edit Bone"""
     return bpy.context.active_bone
