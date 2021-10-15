@@ -4,6 +4,7 @@ Armature utility plugin for Blender, for niche cases I encounter where it would 
 Current features include:
 - Surface Bone Placer - Quickly place bones on geometric surfaces
 - Mark Bone Side - Quickly mark bones as left or right in an armature
+- Clean and Combine - Quickly combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
 
 # Installation
 Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install` in the top right, and select the zip file. Make sure the plugin it points to is enabled.
@@ -36,3 +37,11 @@ An example of what it does (made center bone active, then used tool to place bon
 
 ## Mark Bone Side
 While editing an Armature, go to `Armature > Names > Mark Side`. This works similar to `Auto-Name Left/Right`, but allows you to set bones to one side or another regardless of actual position when not using the "automatic" setting.
+
+## Clean and Combine
+In Object mode, select the objects you want to clean and merge, and make the object you want to merge them into Active. Then, go to `Object > Cleanup > Clean and Combine`. Choose the corresponding settings you like. The resulting objects will have modifiers applied or discarded, be joined together, have geometry cleaned using the given settings, and finally have all transforms applied. This operator is great for multi-part characters, or just generally cleaning up messy files before exporting.
+
+Please note that all modifiers are applied or discarded. **THERE WILL BE DATA LOSS**, but **Armatures and bone weights are preserved**. Though the operator can be undone, it is strongly recommended to have a backup of your model, and only use this tool when you are certain that you want to, or are exporting a model.
+
+![](docs/images/exmp_cleancombine_p1.png)
+![](docs/images/exmp_cleancombine_p2.png)
