@@ -1,10 +1,12 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
+Version 0.0.4 which supports Blender 3.0
+
 Current features include:
-- Surface Bone Placer - Quickly place bones on geometric surfaces
-- Mark Bone Side - Quickly mark bones as left or right in an armature
-- Clean and Combine - Quickly combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
+- Surface Bone Placer - Place bones on geometric surfaces
+- Mark Bone Side - Mark bones as left or right in an armature
+- Clean and Combine - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
 
 # Installation
 Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install` in the top right, and select the zip file. Make sure the plugin it points to is enabled.

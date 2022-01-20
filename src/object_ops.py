@@ -1,5 +1,5 @@
 import bpy
-from bpy.types import EditBone, Mesh, Modifier, Object, Operator
+from bpy.types import EditBone, GreasePencil, Mesh, Modifier, Object, Operator, Curve
 from bpy.props import BoolProperty, EnumProperty, BoolVectorProperty, FloatProperty
 from typing import List
 from .utility import get_active, set_active
@@ -111,43 +111,57 @@ class BoneJuice_CleanAndCombine(Operator):
             for obj in objects:
                 # Update active object so we apply the correct modifiers
                 set_active(obj)
-                self.step_modifiers(context, obj)
+
+                # Convert curves and grease pencil to Mesh
+                objType = type(get_active().data)
+                if objType is Curve or objType is GreasePencil:
+                    bpy.ops.object.convert(target = 'MESH', keep_original = False)
+                    if primary == obj: # Re-select primary if it was a converted curve
+                        primary = get_active()
+                else: # Don't step modifiers if this was just converted
+                    self.step_modifiers(context, obj)
         
         set_active(primary) # Re-set the primary object
+        objects = bpy.context.selected_objects # Refetch other objects in case they changed as well
         
         # Join objects
         if self.do_join:
             bpy.ops.object.join()
         
         primary = get_active() # Update primary object just in case its reference changed when merging
+        objects = bpy.context.selected_objects # Refetch other objects in case they changed as well
         
-        # Perform mesh cleanup
-        if type(get_active().data) is Mesh:
-            bpy.ops.object.mode_set(mode='EDIT') # Enter edit mode
+        # Perform mesh cleanup, on all objects remaining in selection, just in case they weren't all joined
+        for obj in objects:
+            set_active(obj) # Set current object as active
+            if type(get_active().data) is Mesh:
+                bpy.ops.object.mode_set(mode='EDIT') # Enter edit mode
 
-            # Perform triangulation
-            if self.triangulation == 'all':
-                bpy.ops.mesh.select_all(action='SELECT')
-                bpy.ops.mesh.quads_convert_to_tris(quad_method='FIXED',ngon_method='BEAUTY')
-            elif self.triangulation == 'ngons':
-                bpy.ops.mesh.select_face_by_sides(number=4,type='GREATER',extend=False)
-                bpy.ops.mesh.quads_convert_to_tris(quad_method='FIXED',ngon_method='BEAUTY')
-            
-            # Merge nearby vertices
-            if self.merge_dist > 0:
-                bpy.ops.mesh.select_all(action='SELECT')
-                bpy.ops.mesh.remove_doubles(threshold=self.merge_dist)
-            
-            # Remove the remaining geometry
-            if self.delete_loose_geom:
-                bpy.ops.mesh.select_all(action='SELECT')
-                bpy.ops.mesh.delete_loose(use_verts=True,use_edges=True,use_faces=False)
+                # Perform triangulation
+                if self.triangulation == 'all':
+                    bpy.ops.mesh.select_all(action='SELECT')
+                    bpy.ops.mesh.quads_convert_to_tris(quad_method='FIXED',ngon_method='BEAUTY')
+                elif self.triangulation == 'ngons':
+                    bpy.ops.mesh.select_face_by_sides(number=4,type='GREATER',extend=False)
+                    bpy.ops.mesh.quads_convert_to_tris(quad_method='FIXED',ngon_method='BEAUTY')
+                
+                # Merge nearby vertices
+                if self.merge_dist > 0:
+                    bpy.ops.mesh.select_all(action='SELECT')
+                    bpy.ops.mesh.remove_doubles(threshold=self.merge_dist)
+                
+                # Remove the remaining geometry
+                if self.delete_loose_geom:
+                    bpy.ops.mesh.select_all(action='SELECT')
+                    bpy.ops.mesh.delete_loose(use_verts=True,use_edges=True,use_faces=False)
 
-            bpy.ops.mesh.select_all(action='DESELECT')
-            bpy.ops.object.mode_set(mode='OBJECT')
+                bpy.ops.mesh.select_all(action='DESELECT')
+                bpy.ops.object.mode_set(mode='OBJECT')
 
-        # Apply object transform
-        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True, properties=False)
+            # Apply object transform
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True, properties=False)
+
+        set_active(primary)
         
         self.report({'INFO'}, "Finished cleaning and merging objects!") # Provide user feedback
         return {'FINISHED'}
