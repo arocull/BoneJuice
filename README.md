@@ -1,7 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.4 which supports Blender 3.0
+Version 0.0.5 which supports Blender 3.0+
 
 Current features include:
 - Surface Bone Placer - Place bones on geometric surfaces
