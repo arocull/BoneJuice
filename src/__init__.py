@@ -2,7 +2,7 @@ bl_info = {
     "name" : "BoneJuice",
     "author" : "Alan O'Cull",
     "description" : "Armature Utility Plugin for Blender",
-    "blender" : (3, 1, 0),
+    "blender" : (3, 0, 0),
     "version" : (0, 0, 5),
     "location" : "Edit Armature > Add, Edit Armature > Names, Object > Clean Up",
     "warning" : "",
