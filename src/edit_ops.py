@@ -1,10 +1,7 @@
 import bpy
-from bpy.types import EditBone, Operator
-from bpy.props import EnumProperty, BoolVectorProperty
+from bpy.types import EditBone, PoseBone, Operator
+from bpy.props import EnumProperty
 from typing import List
-
-from bpy_types import PoseBone
-from .utility import get_active
 
 class BoneJuice_MarkSide(Operator):
     """Sets the side of the selected edit bones, similar to Armature > Names > Auto-Name Left/Right, but with more control"""

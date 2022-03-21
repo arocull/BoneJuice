@@ -8,6 +8,7 @@ Current features include:
 - Mark Bone Side - Mark bones as left or right in an armature
 - Clean and Combine - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
 - (Bulk) Set Rotation Mode - Select multiple pose bones and set their rotation mode (Quaternion, XYZ Euler, Axis Angle, etc) with just the click of a button.
+- Curl Bones - Offsets euler rotations of all selected pose bones by the given rotation. Only works in Euler rotation mode.
 
 # Installation
 Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install` in the top right, and select the zip file. Make sure the plugin it points to is enabled.
@@ -51,3 +52,11 @@ Please note that all modifiers are applied or discarded. **THERE WILL BE DATA LO
 
 ## Set Bone Rotation Mode
 In Pose mode, select the bones you want to edit, then go to `Pose > Set Rotation Mode`. Choose the rotation mode you want, and all selected pose bones will be set to the new rotation mode. Note that if the bones already have a keyframed rotation, these keyframes will not be converted to the new rotation mode, and you may run into issues with rotation channels clashing.
+
+## Curl Bones
+In Pose mode, select the bones you want to edit, then go to `Pose > Curl Bones`. Then input the angle you want to offset the bones' rotation by.
+
+![](docs/images/exmp_curl_bones1.png)
+![](docs/images/exmp_curl_bones2.png)
+
+Note that currently this only applies to bones with a Euler rotation mode.
