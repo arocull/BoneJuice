@@ -1,7 +1,8 @@
 import bpy
 from bpy_extras import view3d_utils
 from mathutils import Vector, Matrix
-from typing import List
+from typing import List, Dict
+from bpy.types import NlaTrack
 
 # Raycast - Taken and modified from Blender's view3d_raycast modal template 
 def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
@@ -87,9 +88,11 @@ def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
     return None, hitPosition, Vector((0.0, 0.0, 1.0)), 0 # Normal vector should always point up
 
 def dist(posA: Vector, posB: Vector) -> float:
+    """Returns the Euclidean distance between two points."""
     return (posA - posB).length
 
 def dist_threshold(posA: Vector, posB: Vector, threshold: float = 1.0) -> bool:
+    """Returns true if the Euclidean distance between two points is less than the threshold. False otherwise."""
     return dist(posA, posB) < threshold
 
 def get_active() -> bpy.types.Object:
@@ -116,3 +119,16 @@ def invert_matrix_stack(mats: List[Matrix]) -> List[Matrix]:
     
     newMatArray.reverse()
     return newMatArray
+
+def NlaDictList_append(renderTracks: Dict[str, List[NlaTrack]], key: str, track: NlaTrack):
+    """Append a given NLA track to a list of NLA tracks that fall under a given string key."""
+    if hasattr(renderTracks, key):
+        renderTracks[key].append(track)
+    else:
+        renderTracks[key] = [track]
+
+def isCollection(self, obj):
+    """Returns true if the given object is a collection."""
+    if not obj is bpy.types.Collection:
+        return False
+    return True

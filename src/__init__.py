@@ -14,6 +14,7 @@ from .edit_add import BoneJuice_SurfacePlacer
 from .edit_ops import *
 from .object_ops import *
 from .pose_ops import *
+from .render.batch import *
 from .registrator import registerClass, unregisterClass
 
 def register():
@@ -22,6 +23,7 @@ def register():
     registerClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])
     registerClass(BoneJuice_BulkSetRotationMode, [bpy.types.VIEW3D_MT_pose])
     registerClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
+    registerClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
 def unregister():
     unregisterClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
@@ -29,6 +31,7 @@ def unregister():
     unregisterClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])
     unregisterClass(BoneJuice_BulkSetRotationMode, [bpy.types.VIEW3D_MT_pose])
     unregisterClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
+    unregisterClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
 if __name__ == "__main__":
     register()

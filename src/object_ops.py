@@ -1,6 +1,6 @@
 import bpy
 from bpy.types import EditBone, GreasePencil, Mesh, Modifier, Object, Operator, Curve
-from bpy.props import BoolProperty, EnumProperty, BoolVectorProperty, FloatProperty
+from bpy.props import BoolProperty, EnumProperty, FloatProperty
 from typing import List
 from .utility import get_active, set_active
 
@@ -28,7 +28,7 @@ class BoneJuice_CleanAndCombine(Operator):
         ],
         default = 'visible',
     )
-    triangulation: EnumProperty(\
+    triangulation: EnumProperty(
         name = 'Triangulation',
         description = 'What polgyons should be triangulated',
         items = [
