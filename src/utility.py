@@ -132,3 +132,6 @@ def isCollection(self, obj):
     if not obj is bpy.types.Collection:
         return False
     return True
+
+def clampf(num: float, min: float, max: float) -> float:
+    return min if num < min else max if num > max else num

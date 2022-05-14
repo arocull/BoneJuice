@@ -1,5 +1,6 @@
 import bpy
-from bpy.types import Operator, StringProperty
+from bpy.types import Operator
+from bpy.props import StringProperty
 
 class BoneJuice_OperationName(Operator):
     """Operation description."""
@@ -23,7 +24,7 @@ class BoneJuice_OperationName(Operator):
         return url_manual_prefix, url_manual_mapping
 
     ## PROPERTIES
-    renderPrefix: StringProperty(
+    exampleVar: StringProperty(
         name = "Example Property",
         description = "Description.",
         default = "Default Value",
