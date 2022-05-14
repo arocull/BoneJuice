@@ -110,6 +110,7 @@ class BoneJuice_BulkSetRotationMode(Operator):
 
         for bone in bones:
             bone.rotation_mode = self.rotMode
+            # TODO: Switch to bpy.ops.pose.rotation_mode_set('')
 
         self.report({'INFO'}, "Converted selected bone Rotation Modes to " + self.rotMode) # Provide user feedback
         

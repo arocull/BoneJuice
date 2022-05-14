@@ -1,7 +1,7 @@
 from math import pi
 import bpy
-from bpy.types import EditBone, PoseBone, Operator
-from bpy.props import BoolProperty, EnumProperty, FloatVectorProperty
+from bpy.types import PoseBone, Operator
+from bpy.props import BoolProperty, FloatVectorProperty
 from typing import List
 
 class BoneJuice_CurlBones(Operator):

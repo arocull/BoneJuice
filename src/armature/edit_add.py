@@ -2,7 +2,7 @@ import bpy
 from bpy.ops import armature
 from bpy.types import Armature, EditBone
 from mathutils import Vector
-from .utility import dist_threshold, raycast, get_active
+from ..utility import dist_threshold, raycast, get_active
 
 class BoneJuice_SurfacePlacer(bpy.types.Operator):
     bl_idname = "armature.bj_bone_placer_surf"

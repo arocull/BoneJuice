@@ -10,10 +10,10 @@ bl_info = {
 }
 
 import bpy
-from .edit_add import BoneJuice_SurfacePlacer
-from .edit_ops import *
-from .object_ops import *
-from .pose_ops import *
+from .armature.edit_add import BoneJuice_SurfacePlacer
+from .armature.edit_ops import *
+from .mesh.object_ops import *
+from .armature.pose_ops import *
 from .render.batch import *
 from .registrator import registerClass, unregisterClass
 

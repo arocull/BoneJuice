@@ -2,7 +2,7 @@ import bpy
 from bpy.types import EditBone, GreasePencil, Mesh, Modifier, Object, Operator, Curve
 from bpy.props import BoolProperty, EnumProperty, FloatProperty
 from typing import List
-from .utility import get_active, set_active
+from ..utility import get_active, set_active
 
 class BoneJuice_CleanAndCombine(Operator):
     """Cleans up modifiers and object data and combines all of the selected objects into the active object"""
