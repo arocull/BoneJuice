@@ -3,7 +3,7 @@ Armature utility plugin for Blender, for niche cases I encounter where it would 
 
 Version 0.0.6 which supports Blender 3.0+
 
-Feature List:
+Feature List (click on the links to see how-to/examples):
 - Object Mode
     - **[Clean and Combine](docs/examples/clean_and_combine.md)** - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
     - **[Merge Vertex Groups](docs/examples/merge_vertex_groups.md)** - Combine two vertex groups on selected meshes using a given operation. Also available in Weight Paint mode.
