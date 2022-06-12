@@ -180,6 +180,7 @@ class BoneJuice_AddLeafBones(Operator):
             leafBone: EditBone = editArmature.edit_bones.new(boneName)
             leafBone.parent = bone
             leafBone.use_deform = False
+            leafBone.use_connect = True
             leafBone.head = bone.tail
 
             headPos = Vector((bone.head[0], bone.head[1], bone.head[2]))
