@@ -1,13 +1,15 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.6 which supports Blender 3.0+
+Version 0.0.7 which supports Blender 3.0+
 
 Feature List (click on the links to see how-to/examples):
 - Object Mode
     - **[Clean and Combine](docs/examples/clean_and_combine.md)** - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
     - **[Merge Vertex Groups](docs/examples/merge_vertex_groups.md)** - Combine two vertex groups on selected meshes using a given operation. Also available in Weight Paint mode.
 - Armature Edit Mode
+    - **[Add Leaf Bones](docs/examples/add_leaf_bones.md)** - Add leaf bones to an armature for external purposes
+    - **[Select End Bones](docs/examples/select_end_bones.md)** - Select bones at the bottom of the hiearchy
     - **[Surface Bone Placer](docs/examples/surface_bone_placer.md)** - Place bones on geometric surfaces with a single click
     - **[Mark Bone Side](docs/examples/mark_bone_side.md)** - Mark bones as left or right in an armature. Alternative to built-in method which relies on specific rules.
 - Armature Pose Mode

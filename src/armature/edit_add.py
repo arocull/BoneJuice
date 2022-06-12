@@ -1,10 +1,13 @@
+import string
 import bpy
+from typing import List
 from bpy.ops import armature
-from bpy.types import Armature, EditBone
+from bpy.props import StringProperty, BoolProperty, FloatProperty
+from bpy.types import Armature, EditBone, Operator
 from mathutils import Vector
 from ..utility import dist_threshold, raycast, get_active
 
-class BoneJuice_SurfacePlacer(bpy.types.Operator):
+class BoneJuice_SurfacePlacer(Operator):
     bl_idname = "armature.bj_bone_placer_surf"
     bl_label = "Surface Bone Placer"
     bl_description = "Places bones on the surface of an object, facing the normal"
@@ -100,3 +103,96 @@ class BoneJuice_SurfacePlacer(bpy.types.Operator):
         
         # Apply inverse of global transform matrix so bone is placed at global coordinates, not local
         bone.transform(bpy.context.object.matrix_world.inverted())
+
+class BoneJuice_AddLeafBones(Operator):
+    """Adds leaf bone endings to the selected bones."""
+    bl_idname = "object.bj_add_leaf_bones"
+    bl_label = "Add Leaf Bones"
+    bl_description = "Adds leaf bone endings to the selected bones"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    ## MAPPING
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_AddLeafBones.bl_idname,
+            text="Add Leaf Bones",
+            icon='BONE_DATA')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            ("bpy.ops.object.bj_add_leaf_bones", "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
+    ## PROPERTIES
+    preserveSelection: BoolProperty(
+        name = "Preserve Selection",
+        description = "If true, does not alter selection to select the newly created bones",
+        default = False,
+    )
+    boneLength: FloatProperty(
+        name = "Bone Length",
+        description = "Length of the bones to add",
+        default = 0.1,
+        min = 0,
+        soft_min = 0,
+        soft_max = 1,
+    )
+    suffix: StringProperty(
+        name = "Name Suffix",
+        description = "The leaf bones will have the name of their parent with this suffix added",
+        default = "_leaf",
+    )
+    usePrefixInstead: BoolProperty(
+        name = "Use Suffix as Prefix",
+        description = "If true, uses the Name Suffix as a prefix instead",
+        default = False,
+    )
+    
+    ## ACTUAL EXECUTION
+    def execute(self, context: bpy.types.Context):
+        bones: List[EditBone] = bpy.context.selected_editable_bones
+        if len(bones) == 0:
+            self.report({'WARNING'}, "No bones selected")
+            return {'FINISHED'}
+        
+        armatureObj = bpy.context.active_object
+        editArmature: Armature
+        if type(armatureObj.data) is Armature:
+            editArmature = armatureObj.data
+        else:
+            self.report({'WARNING'}, "Active object is not an armature!")
+            return {'FINISHED'}
+
+        newLeafBones: List[EditBone] = []
+        for bone in bones:
+            boneName: str = bone.name
+            if self.usePrefixInstead:
+                boneName = self.suffix + bone.name
+            else:    
+                lastIdentifierIdx = max(boneName.rfind("_"), boneName.rfind("."))
+                if lastIdentifierIdx == -1:
+                    boneName = boneName + self.suffix
+                else:
+                    boneName = boneName[0:lastIdentifierIdx] + self.suffix + boneName[lastIdentifierIdx:len(boneName)]
+            
+            leafBone: EditBone = editArmature.edit_bones.new(boneName)
+            leafBone.parent = bone
+            leafBone.use_deform = False
+            leafBone.head = bone.tail
+
+            headPos = Vector((bone.head[0], bone.head[1], bone.head[2]))
+            tailPos = Vector((bone.tail[0], bone.tail[1], bone.tail[2]))
+            leafTail: Vector = (tailPos - headPos).normalized() * self.boneLength + tailPos
+
+            leafBone.tail = [leafTail.x, leafTail.y, leafTail.z]
+            newLeafBones.append(leafBone)
+        
+        if not self.preserveSelection:
+            bpy.ops.armature.select_all(action='DESELECT')
+            for bone in newLeafBones:
+                bone.select = True
+
+        self.report({'INFO'}, "Geneated leaf bones.")
+        return {'FINISHED'}

@@ -1,6 +1,6 @@
 import bpy
 from bpy.types import EditBone, PoseBone, Operator
-from bpy.props import EnumProperty
+from bpy.props import BoolProperty, EnumProperty
 from typing import List
 
 class BoneJuice_MarkSide(Operator):
@@ -114,4 +114,64 @@ class BoneJuice_BulkSetRotationMode(Operator):
 
         self.report({'INFO'}, "Converted selected bone Rotation Modes to " + self.rotMode) # Provide user feedback
         
+        return {'FINISHED'}
+
+class BoneJuice_SelectBoneChainEnds(Operator):
+    """Selects the very last bones in the hiearchy below the currently selected bones"""
+    bl_idname = "object.bj_select_bone_chain_ends"
+    bl_label = "Select Ends Bones"
+    bl_description = "Selects the very last bones in the hiearchy below the currently selected bones"
+    bl_options = {'REGISTER', 'UNDO'}
+
+        ## MAPPING
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_SelectBoneChainEnds.bl_idname,
+            text="Select End Bones",
+            icon='NONE')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            (BoneJuice_SelectBoneChainEnds.bl_idname, "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
+    ## PROPERTIES
+    ignoreNonDeform: BoolProperty(
+        name = "Ignore Non-Deforming",
+        description = "If true, does not select non-deforming bones like IK Handles (but will still select deforming children if they have any)",
+        default=True,
+    )
+    extendSelection: BoolProperty(
+        name = "Extend",
+        description = "If true, adds these bones to the selection rather than replacing it",
+        default = False,
+    )
+    
+    ## ACTUAL EXECUTION
+    def execute(self, context: bpy.types.Context):
+        startingBones: List[EditBone] = bpy.context.selected_editable_bones
+        if len(startingBones) == 0:
+            self.report({'WARNING'}, "No bones selected")
+            return {'FINISHED'}
+
+        if not self.extendSelection: # Deselect everything if that's what we're doing
+            bpy.ops.armature.select_all(action='DESELECT')
+        
+        # Grab all child bones in hiearchy
+        allBones: List[EditBone] = startingBones.copy()
+        for bone in startingBones:
+            boneChildren = bone.children_recursive
+            for child in boneChildren:
+                allBones.append(child)
+        
+        for bone in allBones:
+            if len(bone.children) == 0: # If this bone has no children
+                if self.ignoreNonDeform and not bone.use_deform: # Pass if we're ignoring non-deformers, and this isn't deforming
+                    pass
+                else: # Otherwise, welcome to the club
+                    bone.select = True
+
+        self.report({'INFO'}, "Selected end bones")
         return {'FINISHED'}
