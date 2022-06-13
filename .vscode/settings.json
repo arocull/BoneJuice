@@ -9,6 +9,7 @@
     "python.analysis.extraPaths": [
         "blender_autocomplete/3.0"
     ],
+    "blender.addon.moduleName": "BoneJuice",
     "blender.addon.loadDirectory": "src",
     "blender.addon.reloadOnSave": true,
     "blender.addon.sourceDirectory": "src"

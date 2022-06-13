@@ -1,5 +1,6 @@
 import bpy
 from bpy_extras import view3d_utils
+from bpy_types import AddonPreferences
 from mathutils import Vector, Matrix
 from typing import List, Dict
 from bpy.types import NlaTrack
@@ -135,3 +136,7 @@ def isCollection(self, obj):
 
 def clampf(num: float, min: float, max: float) -> float:
     return min if num < min else max if num > max else num
+
+def getPreferences(context: bpy.types.Context) -> AddonPreferences:
+    print(context.preferences.addons)
+    return context.preferences.addons["BoneJuice"].preferences
