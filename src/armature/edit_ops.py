@@ -162,9 +162,7 @@ class BoneJuice_SelectBoneChainEnds(Operator):
         # Grab all child bones in hiearchy
         allBones: List[EditBone] = startingBones.copy()
         for bone in startingBones:
-            boneChildren = bone.children_recursive
-            for child in boneChildren:
-                allBones.append(child)
+            allBones.extend(bone.children_recursive)
         
         for bone in allBones:
             if len(bone.children) == 0: # If this bone has no children

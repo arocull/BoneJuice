@@ -19,6 +19,8 @@ from .armature.pose_ops import *
 from .render.batch import *
 from .registrator import registerClass, unregisterClass
 
+from .luchadores.export_armature import *
+
 ## PREFERENCES
 from bpy.types import AddonPreferences
 from bpy.props import BoolProperty
@@ -52,13 +54,15 @@ class BoneJuicePreferences(AddonPreferences):
 ## REGISTER
 def registerLuchadores():
     BoneJuiceGlobals.luchadoresRegistered = True
+    registerClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
+
     print("LUCHADORES REGISTERED")
-    pass
 
 def unregisterLuchadores():
     BoneJuiceGlobals.luchadoresRegistered = False
+    unregisterClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
+
     print("LUCHADORES unregistered")
-    pass
 
 def register():
     bpy.utils.register_class(BoneJuicePreferences)

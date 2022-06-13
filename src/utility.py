@@ -3,7 +3,7 @@ from bpy_extras import view3d_utils
 from bpy_types import AddonPreferences
 from mathutils import Vector, Matrix
 from typing import List, Dict
-from bpy.types import NlaTrack
+from bpy.types import NlaStrips, NlaTrack
 
 # Raycast - Taken and modified from Blender's view3d_raycast modal template 
 def raycast(context, event, filter: str) -> tuple[any, Vector, Vector, int]:
@@ -140,3 +140,25 @@ def clampf(num: float, min: float, max: float) -> float:
 def getPreferences(context: bpy.types.Context) -> AddonPreferences:
     print(context.preferences.addons)
     return context.preferences.addons["BoneJuice"].preferences
+
+def floatListToVector(inp: List[float]) -> Vector:
+    return Vector((inp[0], inp[1], inp[2]))
+
+def floatListToDict(inp: List[float]) -> dict[str, float]:
+    return {
+        "x": inp[0],
+        "y": inp[1],
+        "z": inp[2],
+    }
+
+def getNlaStripLimits(strips: NlaStrips):
+    animFrameStart = 1
+    animFrameEnd: int = 1
+
+    for strip in strips:
+        if strip.frame_end > animFrameEnd:
+            animFrameEnd = strip.frame_end
+        if strip.frame_start < animFrameStart:
+            animFrameStart = strip.frame_start
+    
+    return animFrameStart, animFrameEnd
