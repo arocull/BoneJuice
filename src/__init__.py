@@ -20,6 +20,7 @@ from .render.batch import *
 from .registrator import registerClass, unregisterClass
 
 from .luchadores.export_armature import *
+from .luchadores.annotate_bones import *
 
 ## PREFERENCES
 from bpy.types import AddonPreferences
@@ -55,12 +56,14 @@ class BoneJuicePreferences(AddonPreferences):
 def registerLuchadores():
     BoneJuiceGlobals.luchadoresRegistered = True
     registerClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
+    registerClass(BoneJuice_Luchadores_AnnotateBones, [bpy.types.VIEW3D_MT_pose])
 
     print("LUCHADORES REGISTERED")
 
 def unregisterLuchadores():
     BoneJuiceGlobals.luchadoresRegistered = False
     unregisterClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
+    unregisterClass(BoneJuice_Luchadores_AnnotateBones, [bpy.types.VIEW3D_MT_pose])
 
     print("LUCHADORES unregistered")
 

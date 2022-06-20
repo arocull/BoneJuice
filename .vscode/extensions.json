@@ -1,6 +1,8 @@
 {
     "recommendations": [
         "jacqueslucke.blender-development",
-        "blenderfreetimeprojects.blender-python-code-templates"
+        "blenderfreetimeprojects.blender-python-code-templates",
+        "ms-python.vscode-pylance",
+        "ms-python.python"
     ]
 }
