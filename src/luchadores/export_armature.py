@@ -80,7 +80,7 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
                 "name": obj.name,
                 "exported": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") # Log time when this armature was exported
             },
-            "bones": [],
+            "tree": None,
             "animations": None,
         }
 

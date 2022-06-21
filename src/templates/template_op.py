@@ -13,13 +13,13 @@ class BoneJuice_OperationName(Operator):
     def button(self, context):
         self.layout.operator(
             BoneJuice_OperationName.bl_idname,
-            text="Operation Name",
+            text=BoneJuice_OperationName.bl_label,
             icon='NONE')
 
     def manual_map():
         url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_operation_name", "scene_layout/object/types.html"),
+            (BoneJuice_OperationName.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 

@@ -162,3 +162,11 @@ def getNlaStripLimits(strips: NlaStrips):
             animFrameStart = strip.frame_start
     
     return animFrameStart, animFrameEnd
+
+def getRNA_UI(obj):
+    rna_ui = obj.get('_RNA_UI')
+    if rna_ui is None:
+        obj['_RNA_UI'] = {}
+        rna_ui = obj['_RNA_UI']
+    
+    return rna_ui

@@ -27,7 +27,7 @@ from bpy.types import AddonPreferences
 from bpy.props import BoolProperty
 
 class BoneJuiceGlobals:
-    luchadoresRegistered: bool = False
+    luchadoresRegistered: bool = True
 
 class BoneJuicePreferences(AddonPreferences):
     bl_idname: str = __name__
