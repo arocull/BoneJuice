@@ -18,16 +18,14 @@ from .mesh.merge_vertex_groups import *
 from .armature.pose_ops import *
 from .render.batch import *
 from .registrator import registerClass, unregisterClass
-
-from .luchadores.export_armature import *
-from .luchadores.annotate_bones import *
+from .luchadores import registerLuchadores, unregisterLuchadores
 
 ## PREFERENCES
 from bpy.types import AddonPreferences
 from bpy.props import BoolProperty
 
 class BoneJuiceGlobals:
-    luchadoresRegistered: bool = True
+    luchadoresRegistered: bool = False
 
 class BoneJuicePreferences(AddonPreferences):
     bl_idname: str = __name__
@@ -36,9 +34,9 @@ class BoneJuicePreferences(AddonPreferences):
         print(self.enableLuchadores)
         print(BoneJuiceGlobals.luchadoresRegistered)
         if self.enableLuchadores and (not BoneJuiceGlobals.luchadoresRegistered):
-            registerLuchadores()
+            registerLuchadoresHelper()
         elif (not self.enableLuchadores) and BoneJuiceGlobals.luchadoresRegistered:
-            unregisterLuchadores()
+            unregisterLuchadoresHelper()
 
     enableLuchadores: BoolProperty(
         name="Enable Luchadores Workflow",
@@ -53,19 +51,13 @@ class BoneJuicePreferences(AddonPreferences):
         layout.prop(self, "enableLuchadores")
 
 ## REGISTER
-def registerLuchadores():
+def registerLuchadoresHelper():
     BoneJuiceGlobals.luchadoresRegistered = True
-    registerClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
-    registerClass(BoneJuice_Luchadores_AnnotateBones, [bpy.types.VIEW3D_MT_pose])
+    registerLuchadores()
 
-    print("LUCHADORES REGISTERED")
-
-def unregisterLuchadores():
+def unregisterLuchadoresHelper():
     BoneJuiceGlobals.luchadoresRegistered = False
-    unregisterClass(BoneJuice_Luchadores_ExportArmature, [bpy.types.TOPBAR_MT_file_export])
-    unregisterClass(BoneJuice_Luchadores_AnnotateBones, [bpy.types.VIEW3D_MT_pose])
-
-    print("LUCHADORES unregistered")
+    unregisterLuchadores()
 
 def register():
     bpy.utils.register_class(BoneJuicePreferences)
@@ -81,11 +73,7 @@ def register():
     registerClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
     if getPreferences(bpy.context).enableLuchadores:
-        print("LUCHADORES ENABLED")
-        registerLuchadores()
-        pass
-    else:
-        print("LUCHADORES DISABLED")
+        registerLuchadoresHelper()
 
 def unregister():
     unregisterClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
@@ -99,7 +87,7 @@ def unregister():
     unregisterClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
     if BoneJuiceGlobals.luchadoresRegistered:
-        unregisterLuchadores()
+        unregisterLuchadoresHelper()
 
     bpy.utils.unregister_class(BoneJuicePreferences)
 
