@@ -1,10 +1,12 @@
-import datetime
-from typing import List
 import bpy
+import datetime
 import json
+from idprop.types import IDPropertyArray # UGLY HAX, see 'getBoneDict'
+from typing import List
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import BoolProperty, StringProperty
-from bpy.types import Bone, NlaTrack, NlaTracks, Object, Operator, Armature, ArmatureBones
+from bpy.types import Bone, IDPropertyWrapPtr, NlaTrack, NlaTracks, Object, Operator, Armature, ArmatureBones
+from .boneprops import LUCHADORESBONEPROPDEFAULTS, LUCHADORESBONEPROPS
 from ..utility import floatListToDict, floatListToVector, getNlaStripLimits
 
 class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
@@ -44,9 +46,12 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
         return {'FINISHED'}
     
     def getAnimationData(self, context: bpy.types.Context, armatureObj: Object):
-        tracks: NlaTracks = armatureObj.animation_data.nla_tracks
-
         outAnimations = {}
+
+        if armatureObj.animation_data is None:
+            return outAnimations
+
+        tracks: NlaTracks = armatureObj.animation_data.nla_tracks
 
         for key in tracks.keys():
             track = tracks.get(key)
@@ -56,7 +61,7 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
         return outAnimations
 
     def execute(self, context: bpy.types.Context):
-        obj = context.active_object
+        obj: Object = context.active_object
         if not obj:
             return self.err("No active Armature to work from!")
 
@@ -105,13 +110,30 @@ def getBoneDict(bone: Bone) -> dict[str, any]:
         "position": floatListToDict(bone.head),
         "length": 0,
         "connected": bone.use_connect,
-        "drawable": bone.use_deform,
     }
+
+    for (propKey, default) in zip(LUCHADORESBONEPROPS, LUCHADORESBONEPROPDEFAULTS):
+        trimmed: str = propKey[1:len(propKey)] # Remove initial "l" infront of property names
+        if propKey in bone:
+            val = bone[propKey]
+
+            # UGLY HAX - Tuple properties like colors get converted into this, but we need to re-convert them to a JSON parsable type!
+            # Thus, we import an internal file we can't see, and then split up the object accordingly
+            # I found the internal file location here https://developer.blender.org/rBbf948b2cef3ba340a6bba5e7bd7f4911c9a9275a
+            if type(val) is IDPropertyArray:
+                parsable: list = []
+                for item in val:
+                    parsable.append(item)
+                val = parsable
+
+            boneData[trimmed] = val
+        else:
+            boneData[trimmed] = default
 
     if bone.parent:
         boneData["length"] = bone.length
     
-    if boneData["drawable"]:
+    if "drawable" in boneData:
         boneData["center"] = floatListToDict(bone.center)
         boneData["center_length"] = floatListToVector(bone.center).length
     
