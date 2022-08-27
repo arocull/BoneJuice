@@ -1,11 +1,11 @@
 import string
 import bpy
 from typing import List
-from bpy.ops import armature
-from bpy.props import StringProperty, BoolProperty, FloatProperty
+from bpy.props import IntProperty, StringProperty, BoolProperty, FloatProperty
 from bpy.types import Armature, EditBone, Operator
 from mathutils import Vector
-from ..utility import dist_threshold, raycast, get_active
+from ..utility import dist_threshold, lerpVector, raycast, get_active
+from math import pi
 
 class BoneJuice_SurfacePlacer(Operator):
     bl_idname = "armature.bj_bone_placer_surf"
@@ -196,4 +196,139 @@ class BoneJuice_AddLeafBones(Operator):
                 bone.select = True
 
         self.report({'INFO'}, "Geneated leaf bones.")
+        return {'FINISHED'}
+
+class BoneJuice_AddBoneCircle(Operator):
+    """Creates a circle of bones around the active one."""
+    bl_idname = "object.bj_add_bone_circle"
+    bl_label = "Add Bone Circle"
+    bl_description = "Creates a circle of bones around the active one"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    ## MAPPING
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_AddBoneCircle.bl_idname,
+            text="Add Bone Circle",
+            icon='BONE_DATA')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            ("bpy.ops.object.bj_add_bone_circle", "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
+    ## PROPERTIES
+    count: IntProperty (
+        name = "Count",
+        description = "Number of bones to place around the circle",
+        default = 5,
+        min = 1,
+        soft_max = 12,
+    )
+    rotationOffset: FloatProperty(
+        name = "Rotation Offset",
+        description = "Offset to start rotation with, in degrees",
+        soft_min = 0,
+        soft_max = 2 * pi,
+        subtype='ANGLE',
+        unit='ROTATION',
+    )
+    circleRadius: FloatProperty(
+        name = "Radius",
+        description = "Radius to place the bones in around the current one",
+        default = 1.0,
+        soft_min = 0.05,
+        soft_max = 2.0,
+        unit = 'LENGTH',
+    )
+    boneLength: FloatProperty(
+        name = "Bone Length",
+        description = "Length of the bones to add",
+        default = 0.2,
+        min = 0,
+        soft_min = 0.1,
+        soft_max = 1,
+        unit = 'LENGTH',
+    )
+    toTail: FloatProperty(
+        name = "Head/Tail",
+        description= "Proportion for bone placement, near either the head (0%) or tail (100%) of the active bone",
+        default = 0.0,
+        soft_min = 0.0,
+        soft_max = 1.0,
+        precision = 3,
+        subtype = 'FACTOR',
+    )
+    boneName: StringProperty(
+        name = "Name",
+        description = "Name of the created bones. # will be replaced with the index",
+        default = "circle#",
+    )
+    useDeform: BoolProperty(
+        name = "Use Deform",
+        description = "If true, bones are marked to deform. False otherwise",
+        default = False,
+    )
+    preserveSelection: BoolProperty(
+        name = "Preserve Selection",
+        description = "If true, does not alter selection to select the newly created bones",
+        default = False,
+    )
+    
+    ## ACTUAL EXECUTION
+    def execute(self, context: bpy.context):
+        bones: List[EditBone] = bpy.context.selected_editable_bones
+        if len(bones) == 0:
+            self.report({'WARNING'}, "No bones selected")
+            return {'FINISHED'}
+        
+        armatureObj = bpy.context.active_object
+        editArmature: Armature
+        if type(armatureObj.data) is Armature:
+            editArmature = armatureObj.data
+        else:
+            self.report({'WARNING'}, "Active object is not an armature!")
+            return {'FINISHED'}
+        
+        if context.active_bone is None:
+            self.report({'WARNING'}, "No active edit bone!")
+            return {'FINISHED'}
+        bone: EditBone = context.active_bone
+        origRoll: float = bone.roll
+
+        newBones: List[EditBone] = []
+        idx: int = 0
+        while idx < self.count:
+            idx = idx + 1
+            theta: float = self.rotationOffset + (((2 * pi) / float(self.count)) * float(idx))
+            boneName: str = str(self.boneName).replace('#', str(idx))
+            
+            circleBone: EditBone = editArmature.edit_bones.new(boneName)
+            circleBone.parent = bone
+            circleBone.use_deform = self.useDeform
+            circleBone.use_connect = False
+
+            headPos = Vector((bone.head[0], bone.head[1], bone.head[2]))
+            tailPos = Vector((bone.tail[0], bone.tail[1], bone.tail[2]))
+            basePose: Vector = lerpVector(headPos, tailPos, self.toTail)
+            tailDir: Vector = (tailPos - headPos).normalized()
+            circleTail: Vector = tailDir * self.boneLength + basePose
+
+            bone.roll = origRoll + theta
+
+            circleBone.head = basePose + bone.z_axis * self.circleRadius
+            circleBone.tail = circleTail + bone.z_axis * self.circleRadius
+            circleBone.align_roll(basePose - circleBone.head)
+            newBones.append(circleBone)
+        
+        bone.roll = origRoll
+
+        if not self.preserveSelection:
+            bpy.ops.armature.select_all(action='DESELECT')
+            for bone in newBones:
+                bone.select = True
+
+        self.report({'INFO'}, "Geneated circle bones.")
         return {'FINISHED'}

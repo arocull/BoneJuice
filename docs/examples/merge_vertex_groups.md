@@ -1,7 +1,9 @@
-# Merge Vertex Groups
+# Merge/Operate Vertex Groups
+Run a math operation on one or two vertex groups. Useful for things like merging two vertex groups.
+
 ## Accessing
 From Object mode, select the objects you want to edit, and go to `Object > Apply > Merge Vertex Groups`.
-The operation should apply to all possible objects it can, which is useful for multi-mesh character rigs.
+The operation should apply to all selected objects it can, which is useful for multi-mesh character rigs.
 
 Or, if you're in Weight Paint Mode, simply go to `Weights > Merge Vertex Groups`.
 This will allow real-time view of the operation if you make changes after applying it.

@@ -2,7 +2,7 @@ bl_info = {
     "name" : "BoneJuice",
     "author" : "Alan O'Cull",
     "description" : "Armature Utility Plugin for Blender",
-    "blender" : (3, 0, 0),
+    "blender" : (3, 3, 0),
     "version" : (0, 0, 8),
     "location" : "Edit Armature, Pose Mode, Object Mode",
     "warning" : "",
@@ -64,6 +64,7 @@ def register():
 
     registerClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
     registerClass(BoneJuice_AddLeafBones, [bpy.types.TOPBAR_MT_edit_armature_add])
+    registerClass(BoneJuice_AddBoneCircle, [bpy.types.TOPBAR_MT_edit_armature_add])
     registerClass(BoneJuice_SelectBoneChainEnds, [bpy.types.VIEW3D_MT_select_edit_armature])
     registerClass(BoneJuice_MarkSide, [bpy.types.VIEW3D_MT_edit_armature_names, bpy.types.VIEW3D_MT_pose_names], [BoneJuice_MarkSide.button_edit, BoneJuice_MarkSide.button_pose])
     registerClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])
@@ -78,6 +79,7 @@ def register():
 def unregister():
     unregisterClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
     unregisterClass(BoneJuice_AddLeafBones, [bpy.types.TOPBAR_MT_edit_armature_add])
+    unregisterClass(BoneJuice_AddBoneCircle, [bpy.types.TOPBAR_MT_edit_armature_add])
     unregisterClass(BoneJuice_SelectBoneChainEnds, [bpy.types.VIEW3D_MT_select_edit_armature])
     unregisterClass(BoneJuice_MarkSide, [bpy.types.VIEW3D_MT_edit_armature_names, bpy.types.VIEW3D_MT_pose_names], [BoneJuice_MarkSide.button_edit, BoneJuice_MarkSide.button_pose])
     unregisterClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])

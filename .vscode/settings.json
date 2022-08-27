@@ -1,10 +1,10 @@
 {
     "python.autoComplete.extraPaths": [
-        "blender_autocomplete/3.0"
+        "blender_autocomplete/3.2"
     ],
     "python.linting.pylintArgs": [
         "--init-hook",
-        "import sys; sys.path.append('blender_autocomplete/3.0')"
+        "import sys; sys.path.append('blender_autocomplete/3.2')"
     ],
     "python.analysis.extraPaths": [
         "blender_autocomplete/3.0"

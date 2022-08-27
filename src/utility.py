@@ -137,9 +137,15 @@ def isCollection(self, obj):
 def clampf(num: float, min: float, max: float) -> float:
     return min if num < min else max if num > max else num
 
+def lerpVector(a: Vector, b: Vector, alpha: float) -> Vector:
+    return (a * (1 - alpha)) + (b * alpha)
+
 def getPreferences(context: bpy.types.Context) -> AddonPreferences:
     print(context.preferences.addons)
     return context.preferences.addons["BoneJuice"].preferences
+
+def vectorToFloatList(inp: Vector) -> List[float]:
+    return [inp.x, inp.y, inp.z]
 
 def floatListToVector(inp: List[float]) -> Vector:
     return Vector((inp[0], inp[1], inp[2]))
