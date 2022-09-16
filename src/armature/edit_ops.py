@@ -66,56 +66,6 @@ class BoneJuice_MarkSide(Operator):
         
         return {'FINISHED'}
 
-class BoneJuice_BulkSetRotationMode(Operator):
-    """Sets the rotation mode of the selected pose bones."""
-    bl_idname = "armature.bj_set_rotation_mode"
-    bl_label = "Set Rotation Mode"
-    bl_description = "Sets the rotation mode of the selected pose bones."
-    bl_options = {'REGISTER', 'UNDO'}
-
-    rotMode: EnumProperty(
-        name = 'Rotation Mode',
-        description = 'What mode to use for rotations',
-        items = [
-            ('QUATERNION', 'Quaternion (WXYZ)', 'Use standard quaternions. No gimbal lock, but harder to use with animation curves. This is Blender\'s default.'),
-            ('AXIS_ANGLE', 'Axis Angle', 'Use an axis angle instead for bone rotation.'),
-            ('XYZ', 'XYZ Euler', 'Use euler angles for bone rotation. Susceptible to Gimbal Lock, but easier to animate.'),
-            ('XZY', 'XZY Euler', 'Euler option, with different axis order.'),
-            ('YXZ', 'YXZ Euler', 'Euler option, with different axis order.'),
-            ('YZX', 'YZX Euler', 'Euler option, with different axis order.'),
-            ('ZXY', 'ZXY Euler', 'Euler option, with different axis order.'),
-            ('ZYX', 'ZYX Euler', 'Euler option, with different axis order.'),
-        ],
-        default = 'XYZ',
-    )
-
-    def button(self, context):
-        self.layout.operator(
-            BoneJuice_BulkSetRotationMode.bl_idname,
-            text="Set Rotation Mode",
-            icon='ORIENTATION_GIMBAL')
-
-    def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
-        url_manual_mapping = (
-            ("bpy.ops.armature.bj_set_rotation_mode", "scene_layout/object/types.html"),
-        )
-        return url_manual_prefix, url_manual_mapping
-
-    def execute(self, context: bpy.types.Context):
-        bones: List[PoseBone] = bpy.context.selected_pose_bones
-        if len(bones) == 0:
-            self.report({'WARNING'}, "No bones selected")
-            return {'FINISHED'}
-
-        for bone in bones:
-            bone.rotation_mode = self.rotMode
-            # TODO: Switch to bpy.ops.pose.rotation_mode_set('')
-
-        self.report({'INFO'}, "Converted selected bone Rotation Modes to " + self.rotMode) # Provide user feedback
-        
-        return {'FINISHED'}
-
 class BoneJuice_SelectBoneChainEnds(Operator):
     """Selects the very last bones in the hiearchy below the currently selected bones"""
     bl_idname = "object.bj_select_bone_chain_ends"

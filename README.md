@@ -1,7 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.8 which supports Blender 3.2+
+Version 0.0.9 which supports Blender 3.2+
 
 Feature List (click on the links to see how-to/examples):
 - Object Mode
@@ -14,7 +14,6 @@ Feature List (click on the links to see how-to/examples):
     - **[Surface Bone Placer](docs/examples/surface_bone_placer.md)** - Place bones on geometric surfaces with a single click
     - **[Mark Bone Side](docs/examples/mark_bone_side.md)** - Mark bones as left or right in an armature. Alternative to built-in method which relies on specific rules.
 - Armature Pose Mode
-    - **[Set Rotation Mode](docs/examples/set_bone_rotation_mode.md)** - Select multiple pose bones and set their rotation mode (Quaternion, XYZ Euler, Axis Angle, etc) with just the click of a button. Alternative to built-in method which can be hit-or-miss (although this will not convert keyframed transforms).
     - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
     - **[Flip IK Limits](docs/examples/flip_ik_limits.md)** - Flips the minimum and maximum IK limit of a specified axis for all selected bones.
 - Rendering
