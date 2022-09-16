@@ -71,6 +71,7 @@ def register():
     registerClass(BoneJuice_MergeVertexGroups, [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply])
     registerClass(BoneJuice_BulkSetRotationMode, [bpy.types.VIEW3D_MT_pose])
     registerClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
+    registerClass(BoneJuice_FlipIKLimits, [bpy.types.VIEW3D_MT_pose])
     registerClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
     if getPreferences(bpy.context).enableLuchadores:
@@ -86,6 +87,7 @@ def unregister():
     unregisterClass(BoneJuice_MergeVertexGroups, [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply])
     unregisterClass(BoneJuice_BulkSetRotationMode, [bpy.types.VIEW3D_MT_pose])
     unregisterClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
+    unregisterClass(BoneJuice_FlipIKLimits, [bpy.types.VIEW3D_MT_pose])
     unregisterClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
 
     if BoneJuiceGlobals.luchadoresRegistered:

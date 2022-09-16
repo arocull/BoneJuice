@@ -16,6 +16,7 @@ Feature List (click on the links to see how-to/examples):
 - Armature Pose Mode
     - **[Set Rotation Mode](docs/examples/set_bone_rotation_mode.md)** - Select multiple pose bones and set their rotation mode (Quaternion, XYZ Euler, Axis Angle, etc) with just the click of a button. Alternative to built-in method which can be hit-or-miss (although this will not convert keyframed transforms).
     - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
+    - **[Flip IK Limits](docs/examples/flip_ik_limits.md)** - Flips the minimum and maximum IK limit of a specified axis for all selected bones.
 - Rendering
     - **(Work In Progress) Batch Render NLA Tracks** - Individually render out each animated NLA track inside of all selected objects. Renders from all selected cameras. Great for game animation previews or spritesheets.
 
