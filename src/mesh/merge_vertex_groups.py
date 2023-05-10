@@ -74,26 +74,27 @@ class BoneJuice_MergeVertexGroups(Operator):
 
     ## functions
     def runOperation(self, a: float, b: float) -> float:
-        if self.groupOperation == 'subtract':
-            return a - b
-        elif self.groupOperation == 'multiply':
-            return a * b
-        elif self.groupOperation == 'divide':
-            if (b == 0): # Approach infinity
-                if (a == 0): # Unless we're also zero
-                    return 0
-                return 1
-            return a / b
-        elif self.groupOperation == 'modulus':
-            return a % b
-        elif self.groupOperation == 'pow':
-            return pow(a, b)
-        elif self.groupOperation == 'min':
-            return min(a, b)
-        elif self.groupOperation == 'max':
-            return max(a, b)
-        
-        return a + b
+        match self.groupOperation:
+            case 'subtract':
+                return a - b
+            case 'multiply':
+                return a * b
+            case 'divide':
+                if (b == 0): # Approach infinity
+                    if (a == 0): # Unless we're also zero
+                        return 0
+                    return 1
+                return a / b
+            case 'modulus':
+                return a % b
+            case 'pow':
+                return pow(a, b)
+            case 'min':
+                return min(a, b)
+            case 'max':
+                return max(a, b)
+            case _:
+                return a + b
     def getVertexGroup(self, obj: bpy.types.Object, grpName: str) -> VertexGroup:
         return obj.vertex_groups.get(grpName)
     
