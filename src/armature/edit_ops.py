@@ -2,6 +2,7 @@ import bpy
 from bpy.types import EditBone, PoseBone, Operator
 from bpy.props import BoolProperty, EnumProperty
 from typing import List
+from mathutils import Vector
 
 class BoneJuice_MarkSide(Operator):
     """Sets the side of the selected edit bones, similar to Armature > Names > Auto-Name Left/Right, but with more control"""
@@ -122,4 +123,104 @@ class BoneJuice_SelectBoneChainEnds(Operator):
                     bone.select = True
 
         self.report({'INFO'}, "Selected end bones")
+        return {'FINISHED'}
+
+class BoneJuice_ConnectBones(Operator):
+    """Connects the active bone to its immediate child, or vice-versa."""
+    bl_idname = "bj.connect_bones"
+    bl_label = "Connect Bones"
+    bl_description = "Connects the active bone to its immediate child."
+    bl_options = {'REGISTER', 'UNDO'}
+
+        ## MAPPING
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_ConnectBones.bl_idname,
+            text=BoneJuice_ConnectBones.bl_label,
+            icon='NONE')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            (BoneJuice_ConnectBones.bl_idname, "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
+    ## PROPERTIES
+    reverse: BoolProperty(
+        name = "Reverse",
+        description = "If true, connects all child bones of the active bone to their parent instead. This creates a more continuous skeleton, but will modify bone head positions",
+        default=False,
+    )
+    recursive: BoolProperty(
+        name = "Recursive",
+        description = "If true, performs this operation on all children of this bone as well",
+        default=True,
+    )
+    ignoreNonDeform: BoolProperty(
+        name = "Ignore Non-Deforming",
+        description = "If true, does not iterate through non-deforming bones like IK Handles",
+        default=True,
+    )
+    reverseOnEnds: BoolProperty(
+        name = "Reverse on Ends",
+        description = "If true and not fully Reversed, reverse mode will trigger on bones with no children",
+        default=False,
+    )
+
+    def get_bone_children(self, bone: EditBone) -> List[EditBone]:
+        if not self.ignoreNonDeform: # If we're including non-deforming, use the whole list
+            return bone.children
+        
+        # Otherwise, only pick out deforming bones
+        validChildren: List[EditBone] = list()
+        for item in bone.children:
+            if item.use_deform:
+                validChildren.append(item)
+        
+        return validChildren
+
+    def connectToChild(self, bone: EditBone):
+        boneChildren = self.get_bone_children(bone)
+
+        if len(boneChildren) == 1: # If we only have one child, set our tail position to its head, then connect the child to us
+            child = boneChildren[0]
+            bone.tail = child.head
+            child.use_connect = True
+        elif len(boneChildren) > 1: # Otherwise, set our tail to an average position of all the child bone heads
+            tailPos = Vector((0.0,0.0,0.0))
+            for item in boneChildren:
+                tailPos += item.head
+            tailPos /= len(boneChildren)
+            bone.tail = tailPos
+        elif self.reverseOnEnds:
+            self.connectToParent(bone)
+
+        if self.recursive and len(boneChildren) > 0:
+            for item in boneChildren:
+                self.connectToChild(item)
+        
+    def connectToParent(self, bone: EditBone):
+        if not (bone.parent is None): # Only run if we have a parent bone
+            currentTail = bone.head.copy()
+            bone.head = bone.parent.tail.copy()
+            bone.tail = currentTail
+            bone.use_connect = True # Connect ourselves to our parent
+
+        # Edit children AFTER we've moved the parent bone, to kind of pull things backward
+        boneChildren = self.get_bone_children(bone)
+        if self.recursive and len(boneChildren) > 0:
+            for item in boneChildren:
+                self.connectToParent(item)
+    
+    ## ACTUAL EXECUTION
+    def execute(self, context: bpy.types.Context):
+        startingBone: EditBone = bpy.context.active_bone
+
+        if self.reverse:
+            self.connectToParent(startingBone)
+        else:
+            self.connectToChild(startingBone)
+
+        self.report({'INFO'}, "Connected bones.")
         return {'FINISHED'}

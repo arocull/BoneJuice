@@ -13,6 +13,7 @@ Feature List (click on the links to see how-to/examples):
     - **[Select End Bones](docs/examples/select_end_bones.md)** - Select bones at the bottom of the hiearchy
     - **[Surface Bone Placer](docs/examples/surface_bone_placer.md)** - Place bones on geometric surfaces with a single click
     - **[Mark Bone Side](docs/examples/mark_bone_side.md)** - Mark bones as left or right in an armature. Alternative to built-in method which relies on specific rules.
+    - **(Work In Progress) [Connect Bones](docs/examples/connect_bones.md)** Quickly cleanup imported rigs by reconnecting bones to their children.
 - Armature Pose Mode
     - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
     - **[Flip IK Limits](docs/examples/flip_ik_limits.md)** - Flips the minimum and maximum IK limit of a specified axis for all selected bones.

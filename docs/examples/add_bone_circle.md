@@ -1,4 +1,4 @@
-# Add Leaf Bones
+# Add Bone Circle
 Creates a circle of bones around the active bone, with bone rolls adjusted to face said active bone.
 Useful for radial symmetry.
 
