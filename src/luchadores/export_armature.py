@@ -5,7 +5,7 @@ from idprop.types import IDPropertyArray # UGLY HAX, see 'getBoneDict'
 from typing import List
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import BoolProperty, StringProperty
-from bpy.types import Bone, IDPropertyWrapPtr, NlaTrack, NlaTracks, Object, Operator, Armature, ArmatureBones
+from bpy.types import Bone, IDPropertyWrapPtr, NlaStrip, NlaTrack, NlaTracks, Object, Operator, Armature, ArmatureBones
 from .boneprops import LUCHADORESBONEPROPDEFAULTS, LUCHADORESBONEPROPS
 from ..utility import floatListToDict, floatListToVector, getNlaStripLimits
 
@@ -45,12 +45,17 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
         self.report({'WARNING'}, errorOut)
         return {'FINISHED'}
     
-    def getAnimationData(self, context: bpy.types.Context, armatureObj: Object):
+    def getAnimationData(self, context: bpy.context, armatureObj: Object):
         outAnimations = {}
 
         if armatureObj.animation_data is None:
             return outAnimations
 
+        # https://blender.stackexchange.com/questions/8387/how-to-get-keyframe-data-from-python
+        # There is debate on how to do this. I would like to use NLA tracks, but then we might miss stuff like
+        # F-Curve modifiers and driver data that we could get by just reading the active pose itself.
+        # What I do instead, is iterate through all NLA tracks and move over each frame of the animated track, essentially 'baking'
+        # out animation data.
         tracks: NlaTracks = armatureObj.animation_data.nla_tracks
 
         for key in tracks.keys():
@@ -60,7 +65,7 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
         
         return outAnimations
 
-    def execute(self, context: bpy.types.Context):
+    def execute(self, context: bpy.context):
         obj: Object = context.active_object
         if not obj:
             return self.err("No active Armature to work from!")
@@ -147,7 +152,7 @@ def getBoneDict(bone: Bone) -> dict[str, any]:
 
     return boneData
 
-def getAnimationDict(track: NlaTrack, context: bpy.types.Context) -> dict[str, any]:
+def getAnimationDict(track: NlaTrack, context: bpy.context) -> dict[str, any]:
     startFrame, endFrame = getNlaStripLimits(track.strips)
 
     animationData = {
@@ -155,5 +160,15 @@ def getAnimationDict(track: NlaTrack, context: bpy.types.Context) -> dict[str, a
         "start": startFrame,
         "end": endFrame,
     }
+
+    keyframes: list[dict] = []
+    strips = track.strips
+    for stripName in strips.values():
+        strip: NlaStrip = strips[stripName]
+        #strip.action.
+
+
+    animationData["keyframes"] = keyframes
+    print(keyframes)
 
     return animationData
