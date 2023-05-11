@@ -1,6 +1,6 @@
 import bpy
-from bpy.types import EditBone, PoseBone, Operator
-from bpy.props import BoolProperty, EnumProperty
+from bpy.types import EditBone, Operator
+from bpy.props import BoolProperty, EnumProperty, FloatProperty
 from typing import List
 from mathutils import Vector
 
@@ -167,6 +167,42 @@ class BoneJuice_ConnectBones(Operator):
         description = "If true and not fully Reversed, reverse mode will trigger on bones with no children",
         default=False,
     )
+    alignEnds: BoolProperty(
+        name = "Align End Bones",
+        description = "If true, attempts to align end bones as if they were leaf bones to their parents, but keeping the bone heads in place",
+        default=True,
+    )
+    leafLength: FloatProperty(
+        name = "Aligned Bone Length",
+        description = "Length of the aligned bones",
+        default = 0.1,
+        min = 0,
+        soft_min = 0,
+        soft_max = 1,
+    )
+
+    def draw(self, context: bpy.context):
+        layout = self.layout
+        col = layout.column()
+
+        col.prop(self, "recursive")
+        col.prop(self, "ignoreNonDeform")
+        col.prop(self, "reverse")
+        if not self.reverse:
+            col.label(text="Forward Settings")
+            if not self.alignEnds:
+                col.prop(self, "reverseOnEnds")
+            col.prop(self, "alignEnds")
+            if self.alignEnds:
+                col.prop(self, "leafLength")
+
+    def align_bone(self, bone: EditBone):
+        if bone.parent is None:
+            return
+        
+        dir: Vector = (bone.head - bone.parent.tail).normalized()
+        bone.tail = bone.head + (dir * self.leafLength)
+        bone.roll = bone.parent.roll
 
     def get_bone_children(self, bone: EditBone) -> List[EditBone]:
         if not self.ignoreNonDeform: # If we're including non-deforming, use the whole list
@@ -193,8 +229,11 @@ class BoneJuice_ConnectBones(Operator):
                 tailPos += item.head
             tailPos /= len(boneChildren)
             bone.tail = tailPos
-        elif self.reverseOnEnds:
-            self.connectToParent(bone)
+        else:
+            if self.reverseOnEnds:
+                self.connectToParent(bone)
+            elif self.alignEnds:
+                self.align_bone(bone)
 
         if self.recursive and len(boneChildren) > 0:
             for item in boneChildren:
