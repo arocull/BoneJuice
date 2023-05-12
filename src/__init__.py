@@ -11,14 +11,10 @@ bl_info = {
 }
 
 import bpy
-from .armature.edit_add import *
-from .armature.edit_ops import *
-from .mesh.clean_and_combine import *
-from .mesh.merge_vertex_groups import *
-from .armature.pose_ops import *
-from .render.batch import *
+from .utility import getPreferences
 from .registrator import registerClass, unregisterClass
 from .luchadores import registerLuchadores, unregisterLuchadores
+from .index import BINDINGS
 
 ## PREFERENCES
 from bpy.types import AddonPreferences
@@ -62,35 +58,15 @@ def unregisterLuchadoresHelper():
 def register():
     bpy.utils.register_class(BoneJuicePreferences)
 
-    registerClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
-    registerClass(BoneJuice_AddLeafBones, [bpy.types.TOPBAR_MT_edit_armature_add])
-    registerClass(BoneJuice_AddBoneCircle, [bpy.types.TOPBAR_MT_edit_armature_add])
-    registerClass(BoneJuice_SelectBoneChainEnds, [bpy.types.VIEW3D_MT_select_edit_armature])
-    registerClass(BoneJuice_MarkSide, [bpy.types.VIEW3D_MT_edit_armature_names, bpy.types.VIEW3D_MT_pose_names], [BoneJuice_MarkSide.button_edit, BoneJuice_MarkSide.button_pose])
-    registerClass(BoneJuice_ConnectBones, [bpy.types.VIEW3D_MT_edit_armature])
-    registerClass(BoneJuice_SetBoneLength, [bpy.types.VIEW3D_MT_edit_armature])
-    registerClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])
-    registerClass(BoneJuice_MergeVertexGroups, [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply])
-    registerClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
-    registerClass(BoneJuice_FlipIKLimits, [bpy.types.VIEW3D_MT_pose])
-    registerClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
+    for item in BINDINGS:
+        registerClass(item[0], item[1], item[2])
 
     if getPreferences(bpy.context).enableLuchadores:
         registerLuchadoresHelper()
 
 def unregister():
-    unregisterClass(BoneJuice_SurfacePlacer, [bpy.types.TOPBAR_MT_edit_armature_add])
-    unregisterClass(BoneJuice_AddLeafBones, [bpy.types.TOPBAR_MT_edit_armature_add])
-    unregisterClass(BoneJuice_AddBoneCircle, [bpy.types.TOPBAR_MT_edit_armature_add])
-    unregisterClass(BoneJuice_SelectBoneChainEnds, [bpy.types.VIEW3D_MT_select_edit_armature])
-    unregisterClass(BoneJuice_MarkSide, [bpy.types.VIEW3D_MT_edit_armature_names, bpy.types.VIEW3D_MT_pose_names], [BoneJuice_MarkSide.button_edit, BoneJuice_MarkSide.button_pose])
-    unregisterClass(BoneJuice_ConnectBones, [bpy.types.VIEW3D_MT_edit_armature])
-    unregisterClass(BoneJuice_SetBoneLength, [bpy.types.VIEW3D_MT_edit_armature])
-    unregisterClass(BoneJuice_CleanAndCombine, [bpy.types.VIEW3D_MT_object_cleanup])
-    unregisterClass(BoneJuice_MergeVertexGroups, [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply])
-    unregisterClass(BoneJuice_CurlBones, [bpy.types.VIEW3D_MT_pose])
-    unregisterClass(BoneJuice_FlipIKLimits, [bpy.types.VIEW3D_MT_pose])
-    unregisterClass(BoneJuice_BatchRenderActions, [bpy.types.TOPBAR_MT_render])
+    for item in BINDINGS:
+        unregisterClass(item[0], item[1], item[2])
 
     if BoneJuiceGlobals.luchadoresRegistered:
         unregisterLuchadoresHelper()

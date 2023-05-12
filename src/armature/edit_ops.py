@@ -233,7 +233,6 @@ class BoneJuice_ConnectBones(Operator):
             if self.reverseOnEnds:
                 self.connectToParent(bone)
             elif self.alignEnds:
-                print("Aligning Edit Bone " + bone.name)
                 self.align_bone(bone)
 
         if self.recursive and len(boneChildren) > 0:
