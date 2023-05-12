@@ -200,7 +200,7 @@ class BoneJuice_ConnectBones(Operator):
         if bone.parent is None:
             return
         
-        dir: Vector = (bone.head - bone.parent.tail).normalized()
+        dir: Vector = (bone.head - bone.parent.head).normalized()
         bone.tail = bone.head + (dir * self.leafLength)
         bone.roll = bone.parent.roll
 
@@ -233,6 +233,7 @@ class BoneJuice_ConnectBones(Operator):
             if self.reverseOnEnds:
                 self.connectToParent(bone)
             elif self.alignEnds:
+                print("Aligning Edit Bone " + bone.name)
                 self.align_bone(bone)
 
         if self.recursive and len(boneChildren) > 0:
@@ -255,11 +256,61 @@ class BoneJuice_ConnectBones(Operator):
     ## ACTUAL EXECUTION
     def execute(self, context: bpy.types.Context):
         startingBone: EditBone = bpy.context.active_bone
+        if startingBone == None:
+            self.report({'WARNING'}, "No active Edit Bone")
+            return {'FINISHED'}
 
         if self.reverse:
             self.connectToParent(startingBone)
         else:
             self.connectToChild(startingBone)
 
-        self.report({'INFO'}, "Connected bones.")
+        return {'FINISHED'}
+
+class BoneJuice_SetBoneLength(Operator):
+    """Sets the length of the selected edit bones"""
+    bl_idname = "bj.set_bone_length"
+    bl_label = "Set Bone Length"
+    bl_description = "Sets the length of the selected edit bones"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    boneLength: FloatProperty(
+        name = "Bone Length",
+        description = "Length of the bones to add",
+        default = 0.1,
+        min = 0,
+        soft_min = 0,
+        soft_max = 1,
+    )
+    disconnectBones: BoolProperty(
+        name = "Disconnect",
+        description = "If true, disconnect bones so child bone heads are not pulled",
+        default=True,
+    )
+
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_SetBoneLength.bl_idname,
+            text=BoneJuice_SetBoneLength.bl_label,
+            icon='NONE')
+
+    def manual_map():
+        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_mapping = (
+            (BoneJuice_SetBoneLength.bl_idname, "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+
+    def execute(self, context: bpy.types.Context):
+        bones: List[EditBone] = bpy.context.selected_editable_bones
+        if len(bones) == 0:
+            self.report({'WARNING'}, "No bones selected")
+            return {'FINISHED'}
+
+        for bone in bones:
+            if self.disconnectBones:
+                for item in bone.children:
+                    item.use_connect = False
+            bone.length = self.boneLength
+        
         return {'FINISHED'}

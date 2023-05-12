@@ -8,15 +8,16 @@ Feature List (click on the links to see how-to/examples):
     - **[Clean and Combine](docs/examples/clean_and_combine.md)** - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
     - **[Merge/Operate Vertex Groups](docs/examples/merge_vertex_groups.md)** - Run a math operation on one or two vertex groups. Also available in Weight Paint mode.
 - Armature Edit Mode
+    - **[Connect Bones](docs/examples/connect_bones.md)** Quickly cleanup imported rigs by reconnecting bones to their children.
     - **[Add Bone Circle](docs/examples/add_bone_circle.md)** - Creates a circle of bones around an active bone, with rolls adjusted to face it
     - **[Add Leaf Bones](docs/examples/add_leaf_bones.md)** - Add leaf bones to an armature for external purposes
     - **[Select End Bones](docs/examples/select_end_bones.md)** - Select bones at the bottom of the hiearchy
+    - **Set Bone Length** - Does exactly as it sounds: sets the length of all selected bones to a set value
     - **[Surface Bone Placer](docs/examples/surface_bone_placer.md)** - Place bones on geometric surfaces with a single click
     - **[Mark Bone Side](docs/examples/mark_bone_side.md)** - Mark bones as left or right in an armature. Alternative to built-in method which relies on specific rules.
-    - **(Work In Progress) [Connect Bones](docs/examples/connect_bones.md)** Quickly cleanup imported rigs by reconnecting bones to their children.
 - Armature Pose Mode
-    - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
     - **[Flip IK Limits](docs/examples/flip_ik_limits.md)** - Flips the minimum and maximum IK limit of a specified axis for all selected bones.
+    - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
 - Rendering
     - **(Work In Progress) Batch Render NLA Tracks** - Individually render out each animated NLA track inside of all selected objects. Renders from all selected cameras. Great for game animation previews or spritesheets.
 

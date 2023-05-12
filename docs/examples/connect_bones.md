@@ -16,25 +16,29 @@ First, make active your root bone.
 
 ![](../images/exmp_connect_bones1.png)
 
-Then run `Armature > Connect Bones` to open the operator dialogue. This will perform a basic action for us.
+Then run `Armature > Connect Bones` to open the operator dialogue. This will do its best to align bone tails for all child bones in the tree.
 
 ![](../images/exmp_connect_bones2.png)
 
-It looks alright, but the end bones are still tilted sideways! We can patch that up by reversing the operator on the end bones.
+Already we have a pretty clean lower-body for our mesh. Let's try it on the upper body and see what it does. This works for the upper-body too.
 
 ![](../images/exmp_connect_bones3.png)
 
-Viola! Our bones orientations are now proper. Note that they may take some adjustment, however.
-
-**TODO: Optionally add leaf bones here instead.**
-
-# Example - Extra Clean
-If one is only looking for an armature, you can use the "Reverse" setting instead. However, note that it will shift the origins of your bones up the chain once.
+That looks decent, but our bone rolls are off. Nothing we can't fix with a simple Symmetrize.
 
 ![](../images/exmp_connect_bones4.png)
 
-...which means deforming doesn't feel right!
+# Example - Connect Two Bones
+If a bone only has one child, you can connect the tail of a bone to its child instantly.
 
 ![](../images/exmp_connect_bones5.png)
 
-**TODO: Propogate bone names down with leaf bones so chain ends up being valid?**
+![](../images/exmp_connect_bones6.png)
+
+
+# Example - Rig Only
+If one is only looking for an armature and doesn't care about the skinned mesh, you can use the "Reverse" setting instead for an extra-clean rig. However, note that it will shift the origins of all your bones up the chain by one.
+
+![](../images/exmp_connect_bones7.png)
+
+You can use [add leaf bones](docs\examples\add_leaf_bones.md) to fill-in the bones that disappeared.
