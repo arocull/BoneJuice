@@ -3,7 +3,7 @@ bl_info = {
     "author" : "Alan O'Cull",
     "description" : "Armature Utility Plugin for Blender",
     "blender" : (3, 3, 0),
-    "version" : (0, 0, 10),
+    "version" : (0, 0, 11),
     "location" : "Edit Armature, Pose Mode, Object Mode",
     "warning" : "",
     "doc_url": "https://github.com/arocull/BoneJuice",
