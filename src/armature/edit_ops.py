@@ -350,6 +350,11 @@ class BoneJuice_AutoParentBones(Operator):
         subtype='DISTANCE',
         unit='LENGTH',
     )
+    ignore_tails: BoolProperty(
+        name="Ignore Tails",
+        description="If true, when parenting bones, do not parent a bone to anything with a head placed at its tail (within the given snap distance)",
+        default=True,
+    )
 
     def button(self, context):
         self.layout.operator(
@@ -393,6 +398,12 @@ class BoneJuice_AutoParentBones(Operator):
                     continue
                 d: float = dist(head, b.tail)
                 if d <= nearestDist:
+                    # Check if this is actually a tail bone
+                    if self.ignore_tails:
+                        dTail: float = dist(bone.tail, b.head)
+                        if dTail < self.snap_distance:
+                            continue
+
                     nearestDist = d
                     nearestBone = b
             
