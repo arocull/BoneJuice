@@ -93,7 +93,7 @@ class BoneJuice_ReduceRig(Operator):
         # Clear bone constraints
         if self.clear_constraints:
             bpy.ops.object.mode_set(mode='POSE')
-            bpy.ops.pose.select_all()
+            bpy.ops.pose.select_all(action='SELECT')
             bpy.ops.pose.constraints_clear()
         
         # Return to object mode--done!
