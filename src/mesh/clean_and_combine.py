@@ -6,7 +6,7 @@ from ..utility import get_active, set_active
 
 class BoneJuice_CleanAndCombine(Operator):
     """Cleans up modifiers and object data and combines all of the selected objects into the active object"""
-    bl_idname = "object.bj_clean_combine"
+    bl_idname = "bj.clean_combine"
     bl_label = "Clean and Combine"
     bl_description = "Cleans up modifiers and mesh data and combines all of the selected mesh objects into the active object. THIS WILL CAUSE DATA LOSS and is meant primarly for rapid export processes."
     bl_options = {'REGISTER', 'UNDO'}
@@ -55,13 +55,13 @@ class BoneJuice_CleanAndCombine(Operator):
     def button(self, context):
         self.layout.operator(
             BoneJuice_CleanAndCombine.bl_idname,
-            text="Clean and Combine",
+            text=BoneJuice_CleanAndCombine.bl_label,
             icon='MOD_DATA_TRANSFER')
 
     def manual_map():
         url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_clean_combine", "scene_layout/object/types.html"),
+            (BoneJuice_CleanAndCombine.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
     

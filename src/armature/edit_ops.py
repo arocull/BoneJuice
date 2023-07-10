@@ -3,6 +3,7 @@ from bpy.types import EditBone, Operator
 from bpy.props import BoolProperty, EnumProperty, FloatProperty
 from typing import List
 from mathutils import Vector
+from ..utility import share_layers_array, dist
 
 class BoneJuice_MarkSide(Operator):
     """Sets the side of the selected edit bones, similar to Armature > Names > Auto-Name Left/Right, but with more control"""
@@ -140,9 +141,9 @@ class BoneJuice_ConnectBones(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_ConnectBones.bl_idname, "scene_layout/object/types.html"),
+            (BoneJuice_ConnectBones.bl_idname, "blob/master/docs/examples/connect_bones.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -312,4 +313,93 @@ class BoneJuice_SetBoneLength(Operator):
                     item.use_connect = False
             bone.length = self.boneLength
         
+        return {'FINISHED'}
+
+class BoneJuice_AutoParentBones(Operator):
+    """Attempts to automatically reparent selected bones based on distance"""
+    bl_idname = "bj.autoparent_bones"
+    bl_label = "Auto-Parent Bones"
+    bl_description = "Attempts to automatically reparent selected bones based on distance"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    orphans_only: BoolProperty(
+        name="Orphans Only",
+        description="Only affect orphan bones",
+        default=True,
+    )
+    restrict_layers: BoolProperty(
+        name="Restrict Layers",
+        description="If true, only reparent bones to other bones that share a layer",
+        default=False,
+    )
+    max_distance: FloatProperty(
+        name="Maximum Distance",
+        description="Maximum distance allowed between bone heads and parent tails for connection",
+        default=1,
+        min=0,
+        soft_max=5,
+        subtype='DISTANCE',
+        unit='LENGTH',
+    )
+    snap_distance: FloatProperty(
+        name="Snap Distance",
+        description="Bone heads will automatically connect to parent tails when closer than this distance",
+        default = 0.0001,
+        min=0,
+        soft_max=0.1,
+        subtype='DISTANCE',
+        unit='LENGTH',
+    )
+
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_AutoParentBones.bl_idname,
+            text=BoneJuice_AutoParentBones.bl_label,
+            icon='NONE')
+
+    def manual_map():
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
+        url_manual_mapping = (
+            (BoneJuice_AutoParentBones.bl_idname, "blob/master/docs/examples/clean_and_combine.md"),
+        )
+        return url_manual_prefix, url_manual_mapping
+    
+    def execute(self, context: bpy.types.Context):
+        bones: List[EditBone] = bpy.context.selected_editable_bones
+        if len(bones) == 0:
+            self.report({'WARNING'}, "No bones selected")
+            return {'FINISHED'}
+        
+        # Filter to only orphans
+        if self.orphans_only:
+            for bone in bones:
+                if not bone.parent == None:
+                    bones.remove(bone)
+        if len(bones) == 0:
+            self.report({'WARNING'}, "No orphan bones selected")
+            return {'FINISHED'}
+        
+        # Fetch *all* edit bones
+        all_bones: List[EditBone] = bpy.context.editable_bones
+
+        # Here's the mess: sort through all valid bones and pick the closest one (that's not over max distance)
+        count: int = 0
+        for bone in bones:
+            head = bone.head
+            nearestBone: EditBone = None
+            nearestDist: float = self.max_distance
+            for b in all_bones:
+                if b == bone or not share_layers_array(bone.layers, b.layers):
+                    continue
+                d: float = dist(head, b.tail)
+                if d <= nearestDist:
+                    nearestDist = d
+                    nearestBone = b
+            
+            if nearestBone:
+                bone.use_connect = nearestDist < self.snap_distance
+                bone.parent = nearestBone
+                count += 1
+        
+        self.report({'INFO'}, "Reparented " + str(count) + " bones")
         return {'FINISHED'}

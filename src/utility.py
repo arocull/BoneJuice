@@ -176,3 +176,17 @@ def getRNA_UI(obj):
         rna_ui = obj['_RNA_UI']
     
     return rna_ui
+
+def fill_layers_array(state: bool = False, size: int = 32) -> list[bool]:
+    """Returns an array of booleans of the given state and size"""
+    bools = list[bool]()
+    for _ in range(0, size):
+        bools.append(state)
+    return bools
+
+def share_layers_array(a: list[bool], b: list[bool]) -> bool:
+    """Checks if two arrays of bools are both true at any given index"""
+    for i in range(0, min(len(a), len(b))):
+        if a[i] and b[i]: # If the same index is true on both layers, return true
+            return True
+    return False

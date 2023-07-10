@@ -41,3 +41,4 @@ The Blender Development plugin is really helpful with it's built-in debugger. Pr
 Common issues:
 - If the debugger is running into permission issues on setup, you may have installed the addon as a ZIP beforehand. Open Blender and uninstall the addon, before closing Blender and re-attempting the debugging process.
 - If the debugger is failing to install modules, you may check out this thread [here](https://github.com/JacquesLucke/blender_vscode/issues/99) (I had to run `/home/usrname/.../blender-3.1.0-linux-x64/3.1/python/bin/python3.10 -m ensurepip` before I could use the debugger in Blender 3.1).
+    - In Blender 3.6 on Windows, I had to run `python.exe -m pip install debugpy` in this same directory
