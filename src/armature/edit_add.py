@@ -8,7 +8,7 @@ from ..utility import dist_threshold, lerpVector, raycast, get_active
 from math import pi
 
 class BoneJuice_SurfacePlacer(Operator):
-    bl_idname = "armature.bj_bone_placer_surf"
+    bl_idname = "bj.surface_bone_placer"
     bl_label = "Surface Bone Placer"
     bl_description = "Places bones on the surface of an object, facing the normal"
     bl_options = {"REGISTER","UNDO"}
@@ -25,9 +25,9 @@ class BoneJuice_SurfacePlacer(Operator):
             icon='BONE_DATA')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.armature.bj_bone_placer_surf", "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_SurfacePlacer.bl_idname, "blob/master/docs/examples/surface_bone_placer.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -106,7 +106,7 @@ class BoneJuice_SurfacePlacer(Operator):
 
 class BoneJuice_AddLeafBones(Operator):
     """Adds leaf bone endings to the selected bones."""
-    bl_idname = "object.bj_add_leaf_bones"
+    bl_idname = "bj.add_leaf_bones"
     bl_label = "Add Leaf Bones"
     bl_description = "Adds leaf bone endings to the selected bones"
     bl_options = {'REGISTER', 'UNDO'}
@@ -115,13 +115,13 @@ class BoneJuice_AddLeafBones(Operator):
     def button(self, context):
         self.layout.operator(
             BoneJuice_AddLeafBones.bl_idname,
-            text="Add Leaf Bones",
+            text="Leaf Bones",
             icon='BONE_DATA')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_add_leaf_bones", "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_AddLeafBones.bl_idname, "blob/master/docs/examples/add_leaf_bones.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -200,7 +200,7 @@ class BoneJuice_AddLeafBones(Operator):
 
 class BoneJuice_AddBoneCircle(Operator):
     """Creates a circle of bones around the active one."""
-    bl_idname = "object.bj_add_bone_circle"
+    bl_idname = "bj.add_bone_circle"
     bl_label = "Add Bone Circle"
     bl_description = "Creates a circle of bones around the active one"
     bl_options = {'REGISTER', 'UNDO'}
@@ -209,13 +209,13 @@ class BoneJuice_AddBoneCircle(Operator):
     def button(self, context):
         self.layout.operator(
             BoneJuice_AddBoneCircle.bl_idname,
-            text="Add Bone Circle",
+            text="Bone Circle",
             icon='BONE_DATA')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_add_bone_circle", "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_AddBoneCircle.bl_idname, "blob/master/docs/examples/add_bone_circle.md"),
         )
         return url_manual_prefix, url_manual_mapping
 

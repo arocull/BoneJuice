@@ -7,7 +7,7 @@ from ..utility import share_layers_array, dist
 
 class BoneJuice_MarkSide(Operator):
     """Sets the side of the selected edit bones, similar to Armature > Names > Auto-Name Left/Right, but with more control"""
-    bl_idname = "armature.bj_mark_bone_side"
+    bl_idname = "bj.mark_bone_side"
     bl_label = "Mark Side"
     bl_description = "Sets the side of the selected edit bones, similar to Armature > Names > Auto-Name Left/Right, but with more control"
     bl_options = {'REGISTER', 'UNDO'}
@@ -40,9 +40,9 @@ class BoneJuice_MarkSide(Operator):
             icon='MOD_MIRROR')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.armature.bj_mark_bone_side", "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_MarkSide.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -70,7 +70,7 @@ class BoneJuice_MarkSide(Operator):
 
 class BoneJuice_SelectBoneChainEnds(Operator):
     """Selects the very last bones in the hiearchy below the currently selected bones"""
-    bl_idname = "object.bj_select_bone_chain_ends"
+    bl_idname = "bj.select_bone_chain_ends"
     bl_label = "Select Ends Bones"
     bl_description = "Selects the very last bones in the hiearchy below the currently selected bones"
     bl_options = {'REGISTER', 'UNDO'}
@@ -83,9 +83,9 @@ class BoneJuice_SelectBoneChainEnds(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_SelectBoneChainEnds.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_SelectBoneChainEnds.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -143,7 +143,7 @@ class BoneJuice_ConnectBones(Operator):
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_ConnectBones.bl_idname, "blob/master/docs/examples/connect_bones.md"),
+            ("bpy.ops."+BoneJuice_ConnectBones.bl_idname, "blob/master/docs/examples/connect_bones.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -295,9 +295,9 @@ class BoneJuice_SetBoneLength(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_SetBoneLength.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_SetBoneLength.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -365,7 +365,7 @@ class BoneJuice_AutoParentBones(Operator):
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_AutoParentBones.bl_idname, "blob/master/docs/examples/clean_and_combine.md"),
+            ("bpy.ops."+BoneJuice_AutoParentBones.bl_idname, "blob/master/docs/examples/clean_and_combine.md"),
         )
         return url_manual_prefix, url_manual_mapping
     

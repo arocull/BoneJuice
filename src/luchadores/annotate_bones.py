@@ -8,7 +8,7 @@ from .boneprops import LUCHADORESBONEPROPS
 
 class BoneJuice_Luchadores_CopyBoneProps(Operator):
     """Annotates the selected bones for the Luchadores engine."""
-    bl_idname = "animation.bj_luchadores_copyboneprops"
+    bl_idname = "bj.luchadores.copyboneprops"
     bl_label = "Copy Bone Properties (Luchadores)"
     bl_description = "Annotates the selected bones for the Luchadores engine"
     bl_options = {'REGISTER', 'UNDO'}
@@ -20,9 +20,9 @@ class BoneJuice_Luchadores_CopyBoneProps(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_Luchadores_CopyBoneProps.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_Luchadores_CopyBoneProps.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 

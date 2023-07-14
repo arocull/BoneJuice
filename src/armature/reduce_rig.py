@@ -40,9 +40,9 @@ class BoneJuice_ReduceRig(Operator):
             icon='NONE')
     
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_ReduceRig.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_ReduceRig.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
     

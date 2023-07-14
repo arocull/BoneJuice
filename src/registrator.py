@@ -24,3 +24,12 @@ def unregisterClass(classType, toolContexts: List = [bpy.types.VIEW3D_MT_select_
             but = buttons[i]
         
         toolContexts[i].remove(but)
+
+def registerMenu(classType, drawFunc, toolContexts: List = []):
+    bpy.utils.register_class(classType)
+    for cont in toolContexts:
+        cont.append(drawFunc)
+def unregisterMenu(classType, drawFunc, toolContexts: List = []):
+    for cont in toolContexts:
+        cont.remove(drawFunc)
+    bpy.utils.unregister_class(classType)

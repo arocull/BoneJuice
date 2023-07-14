@@ -59,9 +59,9 @@ class BoneJuice_CleanAndCombine(Operator):
             icon='MOD_DATA_TRANSFER')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_CleanAndCombine.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_CleanAndCombine.bl_idname, "blob/master/docs/examples/clean_and_combine.md"),
         )
         return url_manual_prefix, url_manual_mapping
     
