@@ -6,6 +6,7 @@ from .mesh.merge_vertex_groups import *
 from .armature.pose_ops import *
 from .render.batch import *
 from .armature.reduce_rig import *
+from .armature.transer_animations import *
 from .menus import *
 
 BINDINGS: list = [
@@ -30,4 +31,5 @@ MENUBINDINGS: list = [
 
 BINDINGS_EXPERIMENTAL: list = [
     (BoneJuice_BatchRenderActions,  [bpy.types.TOPBAR_MT_render],               []),
+    (BoneJuice_TransferAnimations,  [bpy.types.VIEW3D_MT_object_animation],     []),
 ]

@@ -3,6 +3,7 @@ from bpy.types import Menu, Operator
 from .armature.edit_ops import *
 from .mesh.merge_vertex_groups import *
 from .armature.reduce_rig import *
+from .armature.transer_animations import *
 from .globals import BoneJuiceGlobals
 
 class BoneJuiceMenu_EditArmature(bpy.types.Menu):
@@ -21,6 +22,7 @@ class BoneJuiceMenu_EditArmature(bpy.types.Menu):
         # Draw experimental settings
         if BoneJuiceGlobals.experimentalRegistered:
             layout.separator()
+            # layout.operator(BoneJuice_TransferAnimations.bl_idname, BoneJuice_TransferAnimations.bl_label)
 
 def BoneJuiceMenu_EditArmatureDraw(self, context):
     self.layout.separator()

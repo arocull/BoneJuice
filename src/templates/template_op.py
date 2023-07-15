@@ -6,16 +6,15 @@ class BoneJuice_OperationName(Operator):
     """Operation description."""
     bl_idname = "bj.operation_name"
     bl_label = "Operation Name"
-    bl_description = "Operation description."
+    bl_description = "Operation description"
     bl_options = {'REGISTER', 'UNDO'}
 
-        ## MAPPING
+    ## MAPPING
     def button(self, context):
         self.layout.operator(
             BoneJuice_OperationName.bl_idname,
             text=BoneJuice_OperationName.bl_label,
             icon='NONE')
-
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
@@ -26,7 +25,7 @@ class BoneJuice_OperationName(Operator):
     ## PROPERTIES
     exampleVar: StringProperty(
         name = "Example Property",
-        description = "Description.",
+        description = "Description",
         default = "Default Value",
     )
     
