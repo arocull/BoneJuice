@@ -1,10 +1,10 @@
 from tokenize import String
 import bpy
 from bpy.ops import action
-from bpy.types import Collection, LayerCollection, NlaStrip, NlaTrack, NlaTracks, Object, Operator, Camera
-from bpy.props import BoolProperty, CollectionProperty, EnumProperty, BoolVectorProperty, FloatProperty, IntProperty, PointerProperty, StringProperty
+from bpy.types import NlaStrip, NlaTrack, NlaTracks, Object, Operator, Camera
+from bpy.props import BoolProperty, IntProperty, StringProperty
 from typing import Dict, List
-from ..utility import get_active, isCollection, set_active, NlaDictList_append
+from ..utility import get_active, set_active, NlaDictList_append
 
 # TODO: Convert this to a dialogue!
 class BoneJuice_BatchRenderActions(Operator):

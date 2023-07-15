@@ -8,7 +8,7 @@ from .boneprops import LUCHADORESBONEPROPS
 
 class BoneJuice_Luchadores_CopyBoneProps(Operator):
     """Annotates the selected bones for the Luchadores engine."""
-    bl_idname = "bj.luchadores.copyboneprops"
+    bl_idname = "bj.luchadores_copyboneprops"
     bl_label = "Copy Bone Properties (Luchadores)"
     bl_description = "Annotates the selected bones for the Luchadores engine"
     bl_options = {'REGISTER', 'UNDO'}

@@ -38,12 +38,14 @@ class BoneJuicePreferences(AddonPreferences):
 
     enableExperimental: BoolProperty(
         name="Enable Experimental Tools",
-        description="These tools are unrefined and extremely niche, but "
+        description="These tools are messy, unrefined, and extremely niche, but may have some use",
+        default=False,
+        update=toggleExperimental
     )
 
     enableLuchadores: BoolProperty(
         name="Enable Luchadores Workflow",
-        description="If true, enables tools for annotating and exporting to the Luchadores engine.",
+        description="Enables tools for annotating and exporting armatures to the Luchadores engine",
         default=False,
         update=toggleLuchadores
     )
