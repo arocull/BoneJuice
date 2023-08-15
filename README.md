@@ -1,14 +1,17 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.10 which supports Blender 3.4+
+Version 0.0.11 which supports Blender 3.6+
+- May be backwards compatible, but latest changes are untested on previous versions
 
 Feature List (click on the links to see how-to/examples):
 - Object Mode
     - **[Clean and Combine](docs/examples/clean_and_combine.md)** - Combine multiple meshes, with modifiers, into one export-ready object. Armatures are preserved.
     - **[Merge/Operate Vertex Groups](docs/examples/merge_vertex_groups.md)** - Run a math operation on one or two vertex groups. Also available in Weight Paint mode.
 - Armature Edit Mode
-    - **[Connect Bones](docs/examples/connect_bones.md)** Quickly cleanup imported rigs by reconnecting bones to their children.
+    - **[Connect Bones](docs/examples/connect_bones.md)** - Quickly cleanup imported rigs by reconnecting bones to their children.
+    - **[Reduce Rig](docs/examples/reduce_rig.md)** - Reduces a rig to deform-only bones, while patching up the bone hiearchy.
+    - **Auto-Parent Bones** - Does exactly as it sounds: attempts to reparent selected bones based on proximity.
     - **[Add Bone Circle](docs/examples/add_bone_circle.md)** - Creates a circle of bones around an active bone, with rolls adjusted to face it
     - **[Add Leaf Bones](docs/examples/add_leaf_bones.md)** - Add leaf bones to an armature for external purposes
     - **[Select End Bones](docs/examples/select_end_bones.md)** - Select bones at the bottom of the hiearchy
@@ -38,6 +41,7 @@ I also highly recommend these VS Code workspace extensions for editing this proj
 
 The Blender Development plugin is really helpful with it's built-in debugger. Press F1, and run `>Blender: Build and Start` to debug. The workspace configuration should be set up for you already.
 
-Common issues:
+### Common Issues
 - If the debugger is running into permission issues on setup, you may have installed the addon as a ZIP beforehand. Open Blender and uninstall the addon, before closing Blender and re-attempting the debugging process.
 - If the debugger is failing to install modules, you may check out this thread [here](https://github.com/JacquesLucke/blender_vscode/issues/99) (I had to run `/home/usrname/.../blender-3.1.0-linux-x64/3.1/python/bin/python3.10 -m ensurepip` before I could use the debugger in Blender 3.1).
+    - In Blender 3.6 on Windows, I had to run `python.exe -m pip install debugpy` in this same directory

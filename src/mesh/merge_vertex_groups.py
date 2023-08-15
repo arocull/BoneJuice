@@ -5,7 +5,7 @@ from ..utility import *
 
 class BoneJuice_MergeVertexGroups(Operator):
     """Combine two vertex groups on selected meshes using a given operation."""
-    bl_idname = "object.bj_merge_vert_groups"
+    bl_idname = "bj.merge_vert_groups"
     bl_label = "Merge Vertex Groups"
     bl_description = "Combine two vertex groups on selected meshes using a given operation."
     bl_options = {'REGISTER', 'UNDO'}
@@ -18,9 +18,9 @@ class BoneJuice_MergeVertexGroups(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_merge_vert_groups", "scene_layout/object/types.html"),
+            ("bpy.ops.bj.merge_vert_groups", "blob/master/docs/examples/merge_vertex_groups.md"),
         )
         return url_manual_prefix, url_manual_mapping
 

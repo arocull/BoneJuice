@@ -4,29 +4,28 @@ from bpy.props import StringProperty
 
 class BoneJuice_OperationName(Operator):
     """Operation description."""
-    bl_idname = "object.bj_operation_name"
+    bl_idname = "bj.operation_name"
     bl_label = "Operation Name"
-    bl_description = "Operation description."
+    bl_description = "Operation description"
     bl_options = {'REGISTER', 'UNDO'}
 
-        ## MAPPING
+    ## MAPPING
     def button(self, context):
         self.layout.operator(
             BoneJuice_OperationName.bl_idname,
             text=BoneJuice_OperationName.bl_label,
             icon='NONE')
-
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_OperationName.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_OperationName.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 
     ## PROPERTIES
     exampleVar: StringProperty(
         name = "Example Property",
-        description = "Description.",
+        description = "Description",
         default = "Default Value",
     )
     

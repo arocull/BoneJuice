@@ -11,7 +11,7 @@ from ..utility import floatListToDict, floatListToVector, getNlaStripLimits
 
 class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
     """Export the selected armature as a Luchadores armature file."""
-    bl_idname = "armature.bj_luchadores_exportarmature"
+    bl_idname = "bj.luchadores_exportarmature"
     bl_label = "Export LuchArmature"
     bl_description = "Export the selected armature as a Luchadores armature file"
     filename_ext: str = ".json"
@@ -24,9 +24,9 @@ class BoneJuice_Luchadores_ExportArmature(Operator, ExportHelper):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            (BoneJuice_Luchadores_ExportArmature.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_Luchadores_ExportArmature.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 

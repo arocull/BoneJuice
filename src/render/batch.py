@@ -1,15 +1,15 @@
 from tokenize import String
 import bpy
 from bpy.ops import action
-from bpy.types import Collection, LayerCollection, NlaStrip, NlaTrack, NlaTracks, Object, Operator, Camera
-from bpy.props import BoolProperty, CollectionProperty, EnumProperty, BoolVectorProperty, FloatProperty, IntProperty, PointerProperty, StringProperty
+from bpy.types import NlaStrip, NlaTrack, NlaTracks, Object, Operator, Camera
+from bpy.props import BoolProperty, IntProperty, StringProperty
 from typing import Dict, List
-from ..utility import get_active, isCollection, set_active, NlaDictList_append
+from ..utility import get_active, set_active, NlaDictList_append
 
 # TODO: Convert this to a dialogue!
 class BoneJuice_BatchRenderActions(Operator):
     """Adjusts render settings, and then renders out each NLA track on selected objects using a list of cameras."""
-    bl_idname = "object.bj_batch_render_actions"
+    bl_idname = "bj.batch_render_actions"
     bl_label = "Batch Render NLA Tracks"
     bl_description = "Adjusts render settings, and then renders out each NLA track on select objects using a list of cameras."
     bl_options = {'REGISTER', 'UNDO'}
@@ -22,9 +22,9 @@ class BoneJuice_BatchRenderActions(Operator):
             icon='ARMATURE_DATA')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.object.bj_batch_render_actions", "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_BatchRenderActions.bl_idname, "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 

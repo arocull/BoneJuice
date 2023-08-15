@@ -6,7 +6,7 @@ from typing import List
 
 class BoneJuice_CurlBones(Operator):
     """Curls the selected bones."""
-    bl_idname = "animation.bj_curl_bones"
+    bl_idname = "bj.curl_bones"
     bl_label = "Curl Bones"
     bl_description = "Sets the rotation mode of the selected pose bones. Only works on bones with a Euler rotation mode."
     bl_options = {'REGISTER', 'UNDO'}
@@ -32,9 +32,9 @@ class BoneJuice_CurlBones(Operator):
             icon='NONE')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.animation.bj_curl_bones", "scene_layout/object/types.html"),
+            ("bpy.ops.bj.curl_bones", "scene_layout/object/types.html"),
         )
         return url_manual_prefix, url_manual_mapping
 
@@ -59,7 +59,7 @@ class BoneJuice_CurlBones(Operator):
 
 class BoneJuice_FlipIKLimits(Operator):
     """Swaps the minimum and maximum values of IK limits of given bones."""
-    bl_idname = "animation.bj_flip_ik_limits"
+    bl_idname = "bj.flip_ik_limits"
     bl_label = "Flip IK Limits"
     bl_description = "Swaps the minimum and maximum values of IK limits of selected bones"
     bl_options = {'REGISTER', 'UNDO'}
@@ -82,9 +82,9 @@ class BoneJuice_FlipIKLimits(Operator):
             icon='MOD_MIRROR')
 
     def manual_map():
-        url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.animation.bj_curl_bones", "scene_layout/object/types.html"),
+            ("bpy.ops.bj.flip_ik_limits", "blob/master/docs/examples/flip_ik_limits.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
