@@ -1,7 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.11 which supports Blender 3.6+
+Version 0.0.12 which supports Blender 3.6+
 - May be backwards compatible, but latest changes are untested on previous versions
 
 Feature List (click on the links to see how-to/examples):
@@ -12,6 +12,7 @@ Feature List (click on the links to see how-to/examples):
     - **[Connect Bones](docs/examples/connect_bones.md)** - Quickly cleanup imported rigs by reconnecting bones to their children.
     - **[Reduce Rig](docs/examples/reduce_rig.md)** - Reduces a rig to deform-only bones, while patching up the bone hiearchy.
     - **Auto-Parent Bones** - Does exactly as it sounds: attempts to reparent selected bones based on proximity.
+    - **Spline from Curve** - Generates Spline IK with optional Bone control points from a curve.
     - **[Add Bone Circle](docs/examples/add_bone_circle.md)** - Creates a circle of bones around an active bone, with rolls adjusted to face it
     - **[Add Leaf Bones](docs/examples/add_leaf_bones.md)** - Add leaf bones to an armature for external purposes
     - **[Select End Bones](docs/examples/select_end_bones.md)** - Select bones at the bottom of the hiearchy

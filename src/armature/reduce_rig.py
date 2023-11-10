@@ -58,8 +58,6 @@ class BoneJuice_ReduceRig(Operator):
 
         unparented: list[EditBone] = list[EditBone]()
 
-        print(len(rig.edit_bones))
-        
         # If we don't have a valid parent, find the highest deformable parent in hiearchy
         for bone in rig.edit_bones:
            if bone.use_deform and ((bone.parent == None) or (not bone.parent.use_deform)):

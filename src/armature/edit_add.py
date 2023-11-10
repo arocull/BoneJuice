@@ -1,8 +1,7 @@
-import string
 import bpy
 from typing import List
 from bpy.props import IntProperty, StringProperty, BoolProperty, FloatProperty
-from bpy.types import Armature, EditBone, Operator
+from bpy.types import Armature, EditBone, Operator, Curve
 from mathutils import Vector
 from ..utility import dist_threshold, lerpVector, raycast, get_active
 from math import pi
@@ -330,5 +329,4 @@ class BoneJuice_AddBoneCircle(Operator):
             for bone in newBones:
                 bone.select = True
 
-        self.report({'INFO'}, "Geneated circle bones.")
         return {'FINISHED'}
