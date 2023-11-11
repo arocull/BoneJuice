@@ -1,6 +1,6 @@
 import bpy
-from bpy.props import IntProperty, StringProperty, BoolProperty, FloatProperty
-from bpy.types import Armature, EditBone, Operator, Curve
+from bpy.props import StringProperty, BoolProperty, FloatProperty
+from bpy.types import Object, Armature, EditBone, Operator, Curve, SplinePoints, SplineBezierPoints, PoseBone
 
 class BoneJuice_SplineFromCurve(Operator):
     """Generates an IK spline from the selected curve and active rig."""
@@ -82,7 +82,7 @@ class BoneJuice_SplineFromCurve(Operator):
         bpy.ops.armature.select_all(action='DESELECT')
         
         isBezier: bool = not spline.bezier_points == None
-        pts = None#: bpy.types.SplinePoints | bpy.types.SplineBezierPoints = None
+        pts: SplinePoints | SplineBezierPoints = None
         if isBezier:
             pts = spline.bezier_points
         else:
@@ -119,37 +119,25 @@ class BoneJuice_SplineFromCurve(Operator):
                 controlBone.use_deform = False
                 ctrlNames.append(boneName)
 
+        bpy.ops.object.mode_set(mode='POSE')
         if self.generateControls:
             if self.doHooks:
                 # NOW, exit into Object Mode, then Edit the Curve
-                bpy.ops.object.mode_set(mode='OBJECT')
-                bpy.context.view_layer.objects.active = curve_object
-                bpy.ops.object.mode_set(mode='EDIT')
-                bpy.ops.curve.select_all(action='DESELECT')
-
-                for i, point in enumerate(spline.bezier_points):
+                for i, point in enumerate(pts):
                     m = curve_object.modifiers.new(name='BJ Spline Hook', type='HOOK')
                     m.center = point.co
                     m.vertex_indices_set([i*3, i*3+1, i*3+2])  # left handle, point, right handle?
                     bpy.context.evaluated_depsgraph_get() # magic spell
                     m.object = armature
                     m.subtarget = ctrlNames[(i+1)%numpts]
-
-                bpy.ops.object.mode_set(mode='OBJECT')
-                bpy.context.view_layer.objects.active = armature
-            bpy.ops.object.mode_set(mode='POSE')
-
             # Set up rigify properties for all control bones
-            # ...use try-catch in case Rigify isn't enabled
-            try:
+            try: # ...use try-catch in case Rigify isn't enabled
                 for i in range(numpts):
                     b = armature.pose.bones[ctrlNames[i]]
                     b.rigify_type = 'basic.raw_copy'
                     b.rigify_parameters.optional_widget_type = 'sphere'
-            except AttributeError: # Rigify was not enabled, fail encoding
+            except AttributeError: # Rigify was not enabled, skip this step
                 pass
-        else:
-            bpy.ops.object.mode_set(mode='POSE')
 
         # Get end of chain
         splineStart: bpy.types.PoseBone = armature.pose.bones.get(lastBoneName)
@@ -157,7 +145,6 @@ class BoneJuice_SplineFromCurve(Operator):
         c.target = curve_object
         c.chain_count = numpts
         bpy.ops.object.mode_set(mode='EDIT')
-
 
     ## ACTUAL EXECUTION
     def execute(self, context: bpy.types.Context):
@@ -179,4 +166,89 @@ class BoneJuice_SplineFromCurve(Operator):
             self.report({'WARNING'}, "Active object is not an armature!")
         self.report({'INFO'}, "Generated spline IK.")
 
+        return {'FINISHED'}
+
+class BoneJuice_HookCurves(Operator):
+    """Hook all points of the selected curve to the nearest selected bones."""
+    bl_idname = "bj.hook_curves"
+    bl_label = "Hook Curves"
+    bl_description = "Hook all points of the selected curve to the nearest selected bones"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    ## MAPPING
+    def button(self, context):
+        self.layout.operator(
+            BoneJuice_HookCurves.bl_idname,
+            text=BoneJuice_HookCurves.bl_label,
+            icon='NONE')
+    def manual_map():
+        url_manual_prefix = "https://github.com/arocull/BoneJuice/"
+        url_manual_mapping = (
+            ("bpy.ops."+BoneJuice_HookCurves.bl_idname, "scene_layout/object/types.html"),
+        )
+        return url_manual_prefix, url_manual_mapping
+    
+    allowReuse: BoolProperty(
+        name = "Allow Reuse",
+        description = "If true, allows multiple hooks to be assigned to a bone",
+        default = False,
+    )
+    maxDist: FloatProperty(
+        name = "Max Distance",
+        description = "Maximum pairing distance for bones",
+        default = 0.2,
+        min = 0,
+        soft_min = 0.01,
+        soft_max = 1,
+        unit = 'LENGTH',
+    )
+    
+    ## ACTUAL EXECUTION
+    def execute(self, context: bpy.types.Context):
+        if not type(context.active_object.data) is Armature:
+            self.report({'WARNING'}, "Active object is not an armature")
+            return {'FINISHED'}
+        if len(context.selected_pose_bones_from_active_object) <= 0:
+            self.report({'WARNING'}, "No bones selected!")
+            return {'FINISHED'}
+
+        armObj: Object = context.active_object
+        armature: Armature = armObj.data
+        
+        for obj in bpy.context.selected_objects:
+            if type(obj.data) is Curve:
+                curve: Curve = obj.data
+                for spline in curve.splines:
+                    isBezier: bool = not spline.bezier_points == None
+                    pts: SplinePoints | SplineBezierPoints = None
+                    if isBezier:
+                        pts = spline.bezier_points
+                    else:
+                        pts = spline.points
+                    bonesList: list[PoseBone] = []
+                    
+                    # TODO: use sorting algorithm to properly distribute bones to rightful owners in case of large offset?
+                    for i, point in enumerate(pts):
+                        globalPos = obj.matrix_world @ point.co
+                        closestBone: PoseBone = None
+                        minDist: float = self.maxDist
+                        for bone in context.selected_pose_bones_from_active_object:
+                            bonePose = armObj.matrix_world @ bone.head
+                            dist: float = (bonePose - globalPos).length
+                            if dist <= minDist and ((not bone in bonesList) or (not self.allowReuse)):
+                                minDist = dist
+                                closestBone = bone
+                        bonesList.append(closestBone)
+
+                    for i, point in enumerate(pts):
+                        if bonesList[i] == None:
+                            continue
+                        m = obj.modifiers.new(name='BJ Spline Hook', type='HOOK')
+                        m.center = point.co
+                        m.vertex_indices_set([i*3, i*3+1, i*3+2])  # left handle, point, right handle?
+                        bpy.context.evaluated_depsgraph_get()
+                        m.object = armObj
+                        m.subtarget = bonesList[i].name
+
+        self.report({'INFO'}, "Completed.")
         return {'FINISHED'}

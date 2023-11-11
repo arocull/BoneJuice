@@ -25,6 +25,7 @@ BINDINGS: list = [
     (BoneJuice_MergeVertexGroups,   [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply], []),
     (BoneJuice_CurlBones,           [bpy.types.VIEW3D_MT_pose],                 []),
     (BoneJuice_FlipIKLimits,        [bpy.types.VIEW3D_MT_pose],                 []),
+    (BoneJuice_HookCurves,          [bpy.types.VIEW3D_MT_pose],                 []),
 ]
 
 MENUBINDINGS: list = [

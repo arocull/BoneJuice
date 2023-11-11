@@ -1,6 +1,7 @@
 import bpy
 from bpy.types import Menu, Operator
 from .armature.edit_ops import *
+from .armature.spline_from_curve import *
 from .mesh.merge_vertex_groups import *
 from .armature.reduce_rig import *
 from .armature.transer_animations import *
