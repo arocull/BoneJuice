@@ -10,23 +10,7 @@ While editing an Armature, go to `Armature > Connect Bones`.
 Make active the root bone you would like to work off of, and run the operator. The operator will run recursively on all children of the active bone, if specified.
 
 ## Example - Imported Rig Cleanup
-**Note: This model is not my own. Credit to Blizzard Entertainment who owns the rights to the character. This use for educational purposes only.**
-
-First, make active your root bone.
-
-![](../images/exmp_connect_bones1.png)
-
-Then run `Armature > Connect Bones` to open the operator dialogue. This will do its best to align bone tails for all child bones in the tree.
-
-![](../images/exmp_connect_bones2.png)
-
-Already we have a pretty clean lower-body for our mesh. Let's try it on the upper body and see what it does. This works for the upper-body too.
-
-![](../images/exmp_connect_bones3.png)
-
-That looks decent, but our bone rolls are off. Nothing we can't fix with a simple Symmetrize.
-
-![](../images/exmp_connect_bones4.png)
+WIP. For now, see the [example](https://alanocull.com/assets/tools/bj_connect_bones_full.mp4) on my website.
 
 # Example - Connect Two Bones
 If a bone only has one child, you can connect the tail of a bone to its child instantly.
