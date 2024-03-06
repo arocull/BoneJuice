@@ -29,6 +29,16 @@ class BoneJuice_Animation_BakeAll(Operator):
         description = "If not empty, only bakes animations with this prefix",
         default = "",
     )
+    startOffset: IntProperty(
+        name = "Start Frame Offset",
+        description = "Start baking from an offset time position. Added to start frame of action",
+        default = -1,
+    )
+    endOffset: IntProperty(
+        name = "End Frame Offset",
+        description = "Stop baking from an offset time position. Added to end frame of action",
+        default = 1,
+    )
     stepSize: IntProperty(
         name = "Step Size",
         description = "Number of frames between each key (including the previously keyed frame)",
@@ -80,8 +90,8 @@ class BoneJuice_Animation_BakeAll(Operator):
 
             bpy.ops.object.mode_set(mode='POSE') # Enter pose mode
             bpy.ops.nla.bake(
-                frame_start=int(act.frame_start),
-                frame_end=int(act.frame_end),
+                frame_start=int(act.frame_start) + self.startOffset,
+                frame_end=int(act.frame_end) + self.endOffset,
                 step=self.stepSize,
                 
                 only_selected=False,
