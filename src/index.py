@@ -8,6 +8,7 @@ from .render.batch import *
 from .armature.reduce_rig import *
 from .armature.transer_animations import *
 from .armature.spline_from_curve import *
+from .animation.bake_all import *
 from .menus import *
 
 BINDINGS: list = [
@@ -22,9 +23,10 @@ BINDINGS: list = [
     (BoneJuice_ReduceRig,           [bpy.types.VIEW3D_MT_object_cleanup],        []),
     (BoneJuice_CleanAndCombine,     [bpy.types.VIEW3D_MT_object_cleanup],       []),
     (BoneJuice_MergeVertexGroups,   [bpy.types.VIEW3D_MT_paint_weight, bpy.types.VIEW3D_MT_object_apply], []),
-    (BoneJuice_CurlBones,           [bpy.types.VIEW3D_MT_pose],                 []),
-    (BoneJuice_FlipIKLimits,        [bpy.types.VIEW3D_MT_pose],                 []),
-    (BoneJuice_HookCurves,          [bpy.types.VIEW3D_MT_pose],                 []),
+    (BoneJuice_CurlBones,           [bpy.types.VIEW3D_MT_pose_transform],                 []),
+    (BoneJuice_FlipIKLimits,        [bpy.types.VIEW3D_MT_pose_constraints],                 []),
+    (BoneJuice_HookCurves,          [bpy.types.VIEW3D_MT_pose_constraints],                 []),
+    (BoneJuice_Animation_BakeAll,   [bpy.types.VIEW3D_MT_object_animation],     []),
 ]
 
 MENUBINDINGS: list = [

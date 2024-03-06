@@ -1,7 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.0.12 which supports Blender 3.6 LTS
+Version 0.0.13 which supports Blender 3.6 LTS
 - May be backwards compatible, but the latest changes are untested on previous versions
 
 Feature List (click on the links to see how-to/examples):
@@ -21,6 +21,8 @@ Feature List (click on the links to see how-to/examples):
 - Armature Pose Mode
     - **[Flip IK Limits](docs/examples/flip_ik_limits.md)** - Flips the minimum and maximum IK limit of a specified axis for all selected bones.
     - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets Euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
+- Animation
+    - **Bake All Actions** - Bakes all scene actions for the given armature.
 - Rendering
     - **(Work In Progress) Batch Render NLA Tracks** - Individually render out each animated NLA track inside of all selected objects. Renders from all selected cameras. Great for game animation previews or spritesheets.
 
