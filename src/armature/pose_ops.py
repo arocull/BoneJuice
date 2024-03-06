@@ -34,7 +34,7 @@ class BoneJuice_CurlBones(Operator):
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops.bj.curl_bones", "scene_layout/object/types.html"),
+            ("bpy.ops.bj.curl_bones", "blob/master/docs/examples/curl_bones.md"),
         )
         return url_manual_prefix, url_manual_mapping
 

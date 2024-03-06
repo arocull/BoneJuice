@@ -36,8 +36,8 @@ When setting up, be sure to clone the Blender Python Autocomplete if you use the
 - `$ git clone https://github.com/Korchy/blender_autocomplete.git`
 
 I also highly recommend these VS Code workspace extensions for editing this project.
-- jacqueslucke.blender-development
-- blenderfreetimeprojects.blender-python-code-templates
+- `jacqueslucke.blender-development`
+- `blenderfreetimeprojects.blender-python-code-templates`
 
 The Blender Development plugin is really helpful with its built-in debugger. Press F1, and run `>Blender: Build and Start` to debug. The workspace configuration should be set up for you already.
 

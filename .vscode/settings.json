@@ -1,16 +1,19 @@
 {
     "python.autoComplete.extraPaths": [
-        "blender_autocomplete/3.4"
+        "blender_autocomplete/3.6"
     ],
     "python.linting.pylintArgs": [
         "--init-hook",
-        "import sys; sys.path.append('blender_autocomplete/3.4')"
+        "import sys; sys.path.append('blender_autocomplete/3.6')"
     ],
     "python.analysis.extraPaths": [
-        "blender_autocomplete/3.4"
+        "blender_autocomplete/3.6"
     ],
     "blender.addon.moduleName": "BoneJuice",
     "blender.addon.loadDirectory": "src",
     "blender.addon.reloadOnSave": true,
-    "blender.addon.sourceDirectory": "src"
+    "blender.addon.sourceDirectory": "src",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportInvalidTypeForm": "none"
+    }
 }

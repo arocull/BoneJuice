@@ -24,7 +24,7 @@ class BoneJuice_BatchRenderActions(Operator):
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
-            ("bpy.ops."+BoneJuice_BatchRenderActions.bl_idname, "scene_layout/object/types.html"),
+            ("bpy.ops."+BoneJuice_BatchRenderActions.bl_idname, "blob/master/README.md"),
         )
         return url_manual_prefix, url_manual_mapping
 
