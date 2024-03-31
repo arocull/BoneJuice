@@ -1,13 +1,13 @@
 {
     "python.autoComplete.extraPaths": [
-        "blender_autocomplete/3.6"
+        "blender_autocomplete/4.0"
     ],
     "python.linting.pylintArgs": [
         "--init-hook",
-        "import sys; sys.path.append('blender_autocomplete/3.6')"
+        "import sys; sys.path.append('blender_autocomplete/4.0')"
     ],
     "python.analysis.extraPaths": [
-        "blender_autocomplete/3.6"
+        "blender_autocomplete/4.0"
     ],
     "blender.addon.moduleName": "BoneJuice",
     "blender.addon.loadDirectory": "src",
