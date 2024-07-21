@@ -1,15 +1,3 @@
-bl_info = {
-    "name" : "BoneJuice",
-    "author" : "Alan O'Cull",
-    "description" : "Armature Utility Plugin for Blender",
-    "blender" : (4, 1, 0),
-    "version" : (0, 1, 0),
-    "location" : "Edit Armature, Pose Mode, Object Mode",
-    "warning" : "",
-    "doc_url": "https://github.com/arocull/BoneJuice",
-    "category" : "Armature, Object"
-}
-
 import bpy
 from .utility import getPreferences
 from .registrator import registerClass, unregisterClass, registerMenu, unregisterMenu

@@ -1,7 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.1.0 which supports Blender 4.0+
+Version 0.1.1 which supports Blender 4.2+
 - May be backwards compatible, but the latest changes are untested on previous versions
 
 Feature List (click on the links to see how-to/examples):
