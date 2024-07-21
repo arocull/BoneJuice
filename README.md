@@ -1,8 +1,7 @@
 # BoneJuice
 Armature utility plugin for Blender, for niche cases I encounter where it would be a lot nicer to have something do the work for me!
 
-Version 0.1.1 which supports Blender 4.2+
-- May be backwards compatible, but the latest changes are untested on previous versions
+Version 1.0.0 which supports Blender 4.2, using the extension system. See **Releases** on sidebar for legacy versions.
 
 Feature List (click on the links to see how-to/examples):
 - Object Mode
@@ -23,11 +22,9 @@ Feature List (click on the links to see how-to/examples):
     - **[Curl Bones](docs/examples/curl_bones.md)** - Offsets Euler rotations of all selected pose bones by the given rotation. Currently only works in Euler rotation mode.
 - Animation
     - **Bake All Actions** - Bakes all scene actions for the given armature.
-- Rendering
-    - **(Work In Progress) Batch Render NLA Tracks** - Individually render out each animated NLA track inside of all selected objects. Renders from all selected cameras. Great for game animation previews or spritesheets.
 
 # Installation
-Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install` in the top right, and select the zip file. Make sure the plugin it points to is enabled.
+Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install from Disk` in the top right dropdown, and select the zip file. Make sure the plugin it points to is enabled.
 
 If you want the latest version, use `$ make` (Linux-only) inside this folder to get a zip file, or simply zip up the `src` folder and install that instead.
 

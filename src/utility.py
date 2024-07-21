@@ -142,7 +142,7 @@ def lerpVector(a: Vector, b: Vector, alpha: float) -> Vector:
 
 def getPreferences(context: bpy.types.Context) -> AddonPreferences:
     print(context.preferences.addons)
-    return context.preferences.addons["BoneJuice"].preferences
+    return context.preferences.addons[__package__].preferences
 
 def vectorToFloatList(inp: Vector) -> List[float]:
     return [inp.x, inp.y, inp.z]

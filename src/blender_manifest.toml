@@ -2,7 +2,7 @@ schema_version = "1.0.0"
 
 # TOML template from https://docs.blender.org/manual/en/4.2/extensions/getting_started.html
 id = "bonejuice"
-version = "0.1.1"
+version = "1.0.0"
 name = "BoneJuice"
 tagline = "Armature utility plugin for Blender"
 maintainer = "Alan O'Cull <alanocull.com>"
