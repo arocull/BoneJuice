@@ -23,6 +23,8 @@ Feature List (click on the links to see how-to/examples):
 - Animation
     - **Bake All Actions** - Bakes all scene actions for the given armature.
 
+*If this tool has helped you, feel free to [send a Kofi](https://ko-fi.com/stagmath) my way, or to the [Blender Foundation](https://fund.blender.org/)!*
+
 # Installation
 Download the zip file from the releases area on GitHub, and then go to `Edit > Preferences > Add-ons` and then click `Install from Disk` in the top right dropdown, and select the zip file. Make sure the plugin it points to is enabled.
 
