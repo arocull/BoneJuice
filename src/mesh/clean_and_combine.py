@@ -1,11 +1,13 @@
 import bpy
-from bpy.types import EditBone, GreasePencil, Mesh, Modifier, Object, Operator, Curve
 from bpy.props import BoolProperty, EnumProperty, FloatProperty
-from typing import List
+from bpy.types import Curve, EditBone, GreasePencil, Mesh, Modifier, Object, Operator
+
 from ..utility import get_active, set_active
+
 
 class BoneJuice_CleanAndCombine(Operator):
     """Cleans up modifiers and object data and combines all of the selected objects into the active object"""
+    @final
     bl_idname = "bj.clean_combine"
     bl_label = "Clean and Combine"
     bl_description = "Cleans up modifiers and mesh data and combines all of the selected mesh objects into the active object. THIS WILL CAUSE DATA LOSS and is meant primarly for rapid export processes."
@@ -52,19 +54,19 @@ class BoneJuice_CleanAndCombine(Operator):
         default = True,
     )
 
-    def button(self, context):
+    def button(self, context: bpy.types.Context):
         self.layout.operator(
             BoneJuice_CleanAndCombine.bl_idname,
             text=BoneJuice_CleanAndCombine.bl_label,
             icon='MOD_DATA_TRANSFER')
 
-    def manual_map():
+    def manual_map(self):
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
             ("bpy.ops."+BoneJuice_CleanAndCombine.bl_idname, "blob/master/docs/examples/clean_and_combine.md"),
         )
         return url_manual_prefix, url_manual_mapping
-    
+
     def step_modifiers(self, context: bpy.types.Context, obj: Object):
         for key in obj.modifiers.keys(): # Get list of modifiers as keys
             mod: Modifier = obj.modifiers[key]
@@ -120,17 +122,17 @@ class BoneJuice_CleanAndCombine(Operator):
                         primary = get_active()
                 else: # Don't step modifiers if this was just converted
                     self.step_modifiers(context, obj)
-        
+
         set_active(primary) # Re-set the primary object
         objects = bpy.context.selected_objects # Refetch other objects in case they changed as well
-        
+
         # Join objects
         if self.do_join:
             bpy.ops.object.join()
-        
+
         primary = get_active() # Update primary object just in case its reference changed when merging
         objects = bpy.context.selected_objects # Refetch other objects in case they changed as well
-        
+
         # Perform mesh cleanup, on all objects remaining in selection, just in case they weren't all joined
         for obj in objects:
             set_active(obj) # Set current object as active
@@ -144,12 +146,12 @@ class BoneJuice_CleanAndCombine(Operator):
                 elif self.triangulation == 'ngons':
                     bpy.ops.mesh.select_face_by_sides(number=4,type='GREATER',extend=False)
                     bpy.ops.mesh.quads_convert_to_tris(quad_method='FIXED',ngon_method='BEAUTY')
-                
+
                 # Merge nearby vertices
                 if self.merge_dist > 0:
                     bpy.ops.mesh.select_all(action='SELECT')
                     bpy.ops.mesh.remove_doubles(threshold=self.merge_dist)
-                
+
                 # Remove the remaining geometry
                 if self.delete_loose_geom:
                     bpy.ops.mesh.select_all(action='SELECT')
@@ -162,6 +164,6 @@ class BoneJuice_CleanAndCombine(Operator):
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True, properties=False)
 
         set_active(primary)
-        
+
         self.report({'INFO'}, "Finished cleaning and merging objects!") # Provide user feedback
         return {'FINISHED'}

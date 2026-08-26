@@ -14,6 +14,9 @@ class BoneJuiceMenu_EditArmature(bpy.types.Menu):
     def draw(self, context: bpy.types.Context):
         layout = self.layout
 
+        if layout is None:
+        	return
+
         # Draw settings that don't really fit in a category
         layout.operator(BoneJuice_SetBoneLength.bl_idname, text=BoneJuice_SetBoneLength.bl_label)
         layout.operator(BoneJuice_ConnectBones.bl_idname, text=BoneJuice_ConnectBones.bl_label)

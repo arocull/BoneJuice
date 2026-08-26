@@ -1,0 +1,23 @@
+[project]
+name = "BoneJuice"
+version = "1.0.0"
+description = "Armature Utility Plugin for Blender"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+
+[tool.uv]
+package = true
+default-groups = ["dev"]
+
+[dependency-groups]
+dev = [
+    "fake-bpy-module>=20260826",
+]
+
+[tool.basedpyright]
+reportUnusedCallResult = false
+reportMissingModuleSource = false # We are using stubs for Blender Python API
+venvPath="./"
+venv=".venv"

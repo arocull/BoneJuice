@@ -1,0 +1,27 @@
+version = 1
+revision = 3
+requires-python = ">=3.14"
+
+[[package]]
+name = "bonejuice"
+version = "1.0.0"
+source = { editable = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "fake-bpy-module" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [{ name = "fake-bpy-module", specifier = ">=20260826" }]
+
+[[package]]
+name = "fake-bpy-module"
+version = "20260826"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/8e/28b303bdab3beb03f08f34f3b90a9a603b8ce2afd963ef8a736dcd7e4e3c/fake_bpy_module-20260826.tar.gz", hash = "sha256:ed289a74e1dadd0984973fe94e659defc43955b798f85f51de80d2628ebcc3b2", size = 961996, upload-time = "2026-08-26T06:29:24.73Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e4/a8/99e7aadd65ea8c27010e0adaed7278c364d5a171e126a5b4272bbdaa79c4/fake_bpy_module-20260826-py3-none-any.whl", hash = "sha256:9146f82cac80da03604667f3503290106cf937b75ec1357da8146ed61d8ea562", size = 1110447, upload-time = "2026-08-26T06:29:23.425Z" },
+]

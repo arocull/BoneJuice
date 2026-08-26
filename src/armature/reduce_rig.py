@@ -38,20 +38,20 @@ class BoneJuice_ReduceRig(Operator):
             BoneJuice_ReduceRig.bl_idname,
             text=BoneJuice_ReduceRig.bl_label,
             icon='NONE')
-    
+
     def manual_map():
         url_manual_prefix = "https://github.com/arocull/BoneJuice/"
         url_manual_mapping = (
             ("bpy.ops."+BoneJuice_ReduceRig.bl_idname, "blob/master/docs/examples/reduce_rig.md"),
         )
         return url_manual_prefix, url_manual_mapping
-    
+
     def execute(self, context: bpy.types.Context):
         if not (context.active_object and context.active_object.type == 'ARMATURE'):
             self.report({'WARNING'}, "Must have an active Armature")
             return {'FINISHED'}
 
-        # rigObj: Object = context.active_object        
+        # rigObj: Object = context.active_object
         rig: Armature = context.active_object.data
         rig.layers = fill_layers_array(True,32)
         bpy.ops.object.mode_set(mode='EDIT')
@@ -64,7 +64,7 @@ class BoneJuice_ReduceRig(Operator):
                set_best_parent(bone)
                if bone.parent == None: # If we still couldn't find a good parent, save it for later
                    unparented.append(bone)
-        
+
         # Now, delete all non-deforming bones
         bpy.ops.armature.select_all(action='DESELECT')
         for bone in rig.edit_bones:
@@ -79,7 +79,7 @@ class BoneJuice_ReduceRig(Operator):
             for bone in unparented:
                 bone.select = True
             bpy.ops.bj.autoparent_bones()
-        
+
         # Reset bone layers
         if self.reset_layers:
             layers = fill_layers_array(False)
@@ -87,13 +87,13 @@ class BoneJuice_ReduceRig(Operator):
             for bone in rig.edit_bones:
                 bone.layers = layers
             rig.layers = layers
-        
+
         # Clear bone constraints
         if self.clear_constraints:
             bpy.ops.object.mode_set(mode='POSE')
             bpy.ops.pose.select_all(action='SELECT')
             bpy.ops.pose.constraints_clear()
-        
+
         # Return to object mode--done!
         bpy.ops.object.mode_set(mode='OBJECT')
 
